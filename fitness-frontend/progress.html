@@ -1,60 +1,249 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Fitness Progress</title>
 
-<title>Progress</title>
+<style>
 
-<link rel="stylesheet" href="style.css">
+body{
+margin:0;
+font-family:Segoe UI;
+background:#0f1720;
+color:white;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+/* photo */
 
+.photo{
+height:55vh;
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url("https://images.unsplash.com/photo-1554284126-aa88f22d8b74");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+padding-left:80px;
+}
+
+.hero h1{
+font-size:48px;
+max-width:600px;
+}
+
+/* SECTION */
+
+.section{
+padding:70px 90px;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.card{
+background:#1f2937;
+padding:30px;
+border-radius:15px;
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card h2{
+color:#1e90ff;
+}
+
+/* GOAL */
+
+.goal-box{
+margin-top:40px;
+background:#1f2937;
+padding:40px;
+border-radius:15px;
+}
+
+.progress-bar{
+height:20px;
+background:#333;
+border-radius:10px;
+margin-top:10px;
+overflow:hidden;
+}
+
+.progress{
+height:100%;
+width:60%;
+background:#1e90ff;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+margin-top:30px;
+border-collapse:collapse;
+background:#1f2937;
+border-radius:10px;
+overflow:hidden;
+}
+
+th{
+background:#1e90ff;
+padding:12px;
+}
+
+td{
+padding:12px;
+text-align:center;
+}
+
+tr:nth-child(even){
+background:#18202d;
+}
+
+/* CTA */
+
+.cta{
+background:#1e90ff;
+text-align:center;
+padding:60px;
+}
+
+.cta h2{
+font-size:30px;
+margin-bottom:20px;
+}
+
+button{
+padding:14px 28px;
+border:none;
+border-radius:30px;
+background:white;
+color:#1e90ff;
+font-weight:600;
+cursor:pointer;
+}
+
+</style>
 </head>
 
 <body>
 
-<header>
-<h1>Fitness Progress</h1>
-<a href="main.html"> <br><Button>← Back</Button></a>
-</header>
 
-<div class="container">
+<section class="photo">
 
-<div class="progress-grid">
+<h1>Track Your Fitness Journey and See Your Progress Over Time</h1>
 
-<div class="card progress-card">
-<h3>Steps Today</h3>
-<p id="progressSteps" class="big-number">0</p>
-</div>
+</section>
 
-<div class="card progress-card">
+<section class="section">
+
+<h2>Your Current Stats</h2>
+
+<div class="cards">
+
+<div class="card">
 <h3>Calories Burned</h3>
-<p id="progressCalories" class="big-number">0 kcal</p>
+<h2>588 kcal</h2>
 </div>
 
-<div class="card progress-card">
+<div class="card">
+<h3>Steps Today</h3>
+<h2>7420</h2>
+</div>
+
+<div class="card">
 <h3>Water Intake</h3>
-<p id="progressWater" class="big-number">0 / 8</p>
+<h2>3 / 8 Glasses</h2>
 </div>
 
-<div class="card progress-card">
-<h3>Calories Consumed</h3>
-<p id="progressFood" class="big-number">0 kcal</p>
-</div>
-
-</div>
-
-
-<div class="card chart-card">
-
-<h2>Daily Activity</h2>
-
-<canvas id="progressChart"></canvas>
-
+<div class="card">
+<h3>Current Weight</h3>
+<h2>70 kg</h2>
 </div>
 
 </div>
 
-<script src="progress.js"></script>
+</section>
+
+
+<section class="section">
+
+<div class="goal-box">
+
+<h2>Weight Loss Goal</h2>
+
+<p>Start Weight: 72 kg</p>
+<p>Current Weight: 70 kg</p>
+<p>Goal Weight: 65 kg</p>
+
+<div class="progress-bar">
+<div class="progress"></div>
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<h2>Daily Progress</h2>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Calories Burned</th>
+<th>Steps</th>
+<th>Weight</th>
+</tr>
+
+<tr>
+<td>Day 1</td>
+<td>420 kcal</td>
+<td>6500</td>
+<td>71 kg</td>
+</tr>
+
+<tr>
+<td>Day 2</td>
+<td>520 kcal</td>
+<td>7100</td>
+<td>70.5 kg</td>
+</tr>
+
+<tr>
+<td>Day 3</td>
+<td>588 kcal</td>
+<td>7420</td>
+<td>70 kg</td>
+</tr>
+
+</table>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta">
+
+<h2>Stay Consistent and Achieve Your Fitness Goals</h2>
+
+<button>Back to Dashboard</button>
+
+</section>
+
 
 </body>
 </html>
