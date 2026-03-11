@@ -1,0 +1,121 @@
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,sans-serif;}
+
+body{
+background:linear-gradient(135deg,#007bff,#17a2b8);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#fff;
+border-radius:12px;
+box-shadow:0 14px 28px rgba(0,0,0,.2);
+position:relative;
+overflow:hidden;
+width:800px;
+max-width:100%;
+min-height:480px;
+}
+
+.form-container{
+position:absolute;
+top:0;
+height:100%;
+transition:all .6s ease-in-out;
+}
+
+.sign-in-container{left:0;width:50%;z-index:2;}
+.container.right-panel-active .sign-in-container{transform:translateX(100%);}
+
+.sign-up-container{left:0;width:50%;opacity:0;z-index:1;}
+.container.right-panel-active .sign-up-container{
+transform:translateX(100%);
+opacity:1;
+z-index:5;
+}
+
+form{
+background:#fff;
+display:flex;
+flex-direction:column;
+padding:0 50px;
+height:100%;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+input{
+background:#eee;
+border:none;
+padding:12px;
+margin:8px 0;
+width:100%;
+border-radius:6px;
+}
+
+button{
+border-radius:20px;
+border:none;
+padding:12px 45px;
+background:linear-gradient(135deg,#007bff,#17a2b8);
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+button.ghost{
+background:transparent;
+border:2px solid #fff;
+}
+
+.overlay-container{
+position:absolute;
+top:0;
+left:50%;
+width:50%;
+height:100%;
+overflow:hidden;
+transition:transform .6s ease-in-out;
+z-index:100;
+}
+
+.container.right-panel-active .overlay-container{
+transform:translateX(-100%);
+}
+
+.overlay{
+background:linear-gradient(135deg,#007bff,#17a2b8);
+color:#fff;
+position:relative;
+left:-100%;
+height:100%;
+width:200%;
+transform:translateX(0);
+transition:transform .6s ease-in-out;
+}
+
+.container.right-panel-active .overlay{
+transform:translateX(50%);
+}
+
+.overlay-panel{
+position:absolute;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:0 40px;
+text-align:center;
+top:0;
+height:100%;
+width:50%;
+}
+
+.overlay-left{transform:translateX(-20%);}
+.container.right-panel-active .overlay-left{transform:translateX(0);}
+
+.overlay-right{right:0;}

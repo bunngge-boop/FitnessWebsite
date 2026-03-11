@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Progress</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+<h1>Fitness Progress</h1>
+<a href="main.html">← Back</a>
+</header>
+
+<div class="container">
+
+<div class="progress-grid">
+
+<div class="card progress-card">
+<h3>Steps Today</h3>
+<p id="progressSteps" class="big-number">0</p>
+</div>
+
+<div class="card progress-card">
+<h3>Calories Burned</h3>
+<p id="progressCalories" class="big-number">0 kcal</p>
+</div>
+
+<div class="card progress-card">
+<h3>Water Intake</h3>
+<p id="progressWater" class="big-number">0 / 8</p>
+</div>
+
+<div class="card progress-card">
+<h3>Calories Consumed</h3>
+<p id="progressFood" class="big-number">0 kcal</p>
+</div>
+
+</div>
+
+
+<div class="card chart-card">
+
+<h2>Daily Activity</h2>
+
+<canvas id="progressChart"></canvas>
+
+</div>
+
+</div>
+
+<script src="progress.js"></script>
+
+</body>
+</html>

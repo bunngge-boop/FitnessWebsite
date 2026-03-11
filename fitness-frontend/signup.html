@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Create Account</h2>
+
+<input type="text" id="newUser" placeholder="Username">
+<input type="password" id="newPass" placeholder="Password">
+
+<button onclick="signup()">Sign Up</button>
+
+<script>
+
+function signup(){
+
+const user=document.getElementById("newUser").value;
+const pass=document.getElementById("newPass").value;
+
+localStorage.setItem("user",user);
+localStorage.setItem("pass",pass);
+
+window.location.href="userinfo.html";
+
+}
+
+</script>
+
+</body>
+</html>

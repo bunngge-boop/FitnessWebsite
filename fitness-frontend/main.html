@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    <h1> Fitness Tracking</h1>
+    <h2 id="welcome"></h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+ </header>
+   <div class="navigation">
+  
+    <ul>
+
+<li class="active"><a href="#"><span class="icon">🏠</span><span class="text">Home</span></a></li>
+<li><a href="workout.html"><span class="icon">🏋</span><span class="text">Workout</span></a></li>
+<li><a href="calories.html"><span class="icon">🔥</span><span class="text">Calories</span></a></li>
+<li><a href="progress.html"><span class="icon">📊</span><span class="text">Progress</span></a></li>
+
+<li><a href="#"><span class="icon">👤</span><span class="text">Profile</span></a></li>
+
+<div class="indicator"></div>
+</ul>
+    </div>
+   
+
+    <div class="container">
+        <section class ="card">
+            <h2 style="text-align: center; padding:9px">Dashboard</h2>
+            <div class="grid">
+                <div class="block">
+                    <h3>todays steps</h3>
+                    <button onclick="startTracking()">Start Tracking</button>
+                     <button onclick="stopTracking()">Stop</button> 
+                     <button onclick="resetSteps()">Reset</button>
+                    <p id="steps">0</p>
+                    
+                   
+                         
+
+                </div>
+                <div class="block">
+                    <h3>Calories Burned</h3>
+                    <p id="burned" style="font-family:cursive">0 kcal</p>
+
+                </div>
+        
+    <div class="block">
+
+<h3>Water Intake</h3>
+
+<p id="waterText">0 / 8 glasses</p>
+
+<div style="background:#ddd;height:12px;border-radius:10px;margin-bottom:10px;">
+    <div id="waterBar"
+    style="height:12px;width:0%;
+    background:linear-gradient(135deg,#17a2b8,#00c6ff);
+    border-radius:10px;"></div>
+</div>
+
+<button onclick="addWater()">+1 Glass</button>
+<button onclick="resetWater()">Reset</button>
+
+</div>
+            </div>
+        </section>
+      
+  
+
+<section class="card">
+    <h2>Progress</h2>
+    <p>Charts and analysis</p>
+    </section>
+  </div>
+  <footer>
+    <p> &copy Fitness Tracker</p>
+  </footer>
+<script src="script.js"></script>
+</body>
+</html>

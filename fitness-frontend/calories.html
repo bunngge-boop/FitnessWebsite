@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calories</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Calories Intake</h1>
+    <a href="main.html"><br><button>⬅ Back</button></a>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+<section class="card">
+
+<h2>Calorie Tracker</h2>
+
+<form id="calorieForm">
+
+<select id="foodSelect" onchange="setCalories()">
+<option value="">--Choose Food--</option>
+
+<option data-cal="200">Rice (1 bowl)</option>
+<option data-cal="120">Roti</option>
+<option data-cal="180">Dal</option>
+<option data-cal="220">Paneer Curry</option>
+<option data-cal="250">Chicken Curry</option>
+<option data-cal="150">Samosa</option>
+<option data-cal="300">Veg Biryani</option>
+<option data-cal="350">Chicken Biryani</option>
+<option data-cal="90">Idli</option>
+<option data-cal="180">Dosa</option>
+<option data-cal="78">Boiled Egg</option>
+<option data-cal="150">Milk</option>
+<option data-cal="105">Banana</option>
+<option data-cal="95">Apple</option>
+<option data-cal="250">Bread Butter</option>
+<option data-cal="310">Maggi</option>
+<option data-cal="220">Poha</option>
+<option data-cal="270">Upma</option>
+<option data-cal="285">Pizza Slice</option>
+<option data-cal="320">Burger</option>
+<option data-cal="365">French Fries</option>
+<option data-cal="210">Sandwich</option>
+<option data-cal="160">Oats</option>
+<option data-cal="120">Salad</option>
+<option data-cal="170">Peanut Butter</option>
+</select>
+
+<label>Calories</label>
+<input type="number" id="calories" readonly>
+
+<button type="submit">Add Food</button>
+
+</form>
+<br>
+<h3>Today's Food</h3>
+
+<table id="foodTable" border="2" style="width:100%;margin-top:10px;border-collapse:collapse;height:50px">
+<thead>
+<tr>
+<th>Food</th>
+<th>Calories</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<br>
+<h2 style="color:#17a2b8">Total Calories: <span id="totalCalories">0</span> kcal</h2>
+
+</section>
+
+</div>
+
+<script>
+let total=0;
+
+function setCalories(){
+const s=document.getElementById("foodSelect");
+const cal=s.options[s.selectedIndex].getAttribute("data-cal");
+document.getElementById("calories").value=cal||"";
+}
+
+document.getElementById("calorieForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const s=document.getElementById("foodSelect");
+const food=s.options[s.selectedIndex].text;
+const cal=parseInt(document.getElementById("calories").value);
+
+if(!cal){ alert("Select food first"); return; }
+
+const tbody=document.querySelector("#foodTable tbody");
+const row=tbody.insertRow();
+
+row.insertCell(0).innerText=food;
+row.insertCell(1).innerText=cal+" kcal";
+
+const del=row.insertCell(2);
+const btn=document.createElement("button");
+btn.innerText="Delete";
+btn.className="delete-btn";
+btn.onclick=function(){
+total-=cal;
+document.getElementById("totalCalories").innerText=total;
+row.remove();
+};
+del.appendChild(btn);
+
+total+=cal;
+document.getElementById("totalCalories").innerText=total;
+
+this.reset();
+
+});
+function logout(){
+    sessionStorage.removeItem("loggedIn");
+    window.location.href="login.html";
+}
+</script>
+
+</body>
+</html>
