@@ -4,35 +4,161 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Workout Tracker</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* PAGE BACKGROUND IMAGE */
+
+.photo{
+background:
+linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48");
+background-size:cover;
+background-position:center;
+min-height:100vh;
+font-family:Segoe UI;
+color:white;
+}
+
+/* TOP BAR */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 80px;
+background:#0b0f14;
+border-radius:15px;
+}
+
+header h1{
+margin:0;
+}
+
+/* CONTAINER */
+
+.container{
+padding:60px 90px;
+display:flex;
+justify-content:center;
+}
+
+/* CARD */
+
+.card{
+background:#1f2937;
+padding:40px;
+border-radius:15px;
+width:900px;
+}
+
+/* INPUTS */
+
+select,input{
+width:100%;
+padding:12px;
+margin-top:8px;
+margin-bottom:18px;
+border:none;
+border-radius:10px;
+}
+
+/* BUTTONS */
+
+button{
+padding:10px 22px;
+border:none;
+border-radius:20px;
+background:#1e90ff;
+color:white;
+cursor:pointer;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:#18202d;
+border-radius:10px;
+overflow:hidden;
+}
+
+th{
+background:#1e90ff;
+padding:12px;
+}
+
+td{
+padding:12px;
+text-align:center;
+}
+
+tr:nth-child(even){
+background:#111827;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+background:red;
+border:none;
+padding:6px 14px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+}
+
+/* PROGRESS BAR */
+
+.progress-bg{
+background:#444;
+height:14px;
+border-radius:10px;
+}
+
+.progress-bar{
+height:14px;
+width:0%;
+background:linear-gradient(135deg,#007bff,#17a2b8);
+border-radius:10px;
+}
+
+</style>
 </head>
 
-<body>
+<body class="photo">
 
 <header>
-    <h1>Workout Tracker</h1><br>
-    <a href="main.html"><button>⬅ Back to Dashboard</button></a>
-    <button class="logout-btn" onclick="logout()">Logout</button>
+
+<h1>Workout Tracker</h1>
+
+<div>
+<a href="main.html"><button style="margin: 15px;">⬅ Back to Dashboard</button></a>
+<button onclick="logout()">Logout</button>
+</div>
+
 </header>
+
 
 <div class="container">
 
 <section class="card">
 
-    <label>Set Daily Goal (kcal)</label>
+<label>Set Daily Goal (kcal)</label>
 
-<div style="display:flex;gap:10px;margin-bottom:10px;">
-    <input type="number" id="goalInput" placeholder="Enter goal (e.g. 500)" min="100">
-    <button type="button" onclick="setGoal()">Set Goal</button>
+<div style="display:flex;gap:10px;margin-bottom:20px;">
+<input type="number" id="goalInput" placeholder="Enter goal (e.g. 500)" min="100">
+<button type="button" onclick="setGoal()">Set Goal</button>
 </div>
 
-<br>
 <h2>Log Workout</h2>
 
 <form id="workoutForm">
 
 <select id="workoutSelect">
-<option value="">Choose Workout </option>
+<option value="">Choose Workout</option>
 <option data-cal="8">Walking</option>
 <option data-cal="10">Running</option>
 <option data-cal="7">Cycling</option>
@@ -58,7 +184,8 @@
 
 <h3>Today's Workouts</h3>
 
-<table id="workoutTable" border="2" style="width:100%;margin-top:10px;border-collapse:collapse;">
+<table id="workoutTable">
+
 <thead>
 <tr>
 <th>Workout</th>
@@ -69,40 +196,39 @@
 <th>Action</th>
 </tr>
 </thead>
+
 <tbody></tbody>
+
 </table>
 
-<h2>Total Burned: <span id="totalBurned">0</span>kcal</h2>
-<br>
-<!-- progress bar -->
+<h2>Total Burned: <span id="totalBurned">0</span> kcal</h2>
+
 <h3 id="goalText">Calories Burned: 0 / 0 kcal</h3>
 
-<div style="background:#ddd;height:14px;border-radius:10px;">
-    <div id="progressBar"
-    style="height:14px;width:0%;
-    background:linear-gradient(135deg,#007bff,#17a2b8);
-    border-radius:10px;"></div>
-</div>
+<div class="progress-bg">
+<div id="progressBar" class="progress-bar"></div>
 </div>
 
 </section>
 
 </div>
 
+
 <script>
+
 let totalBurned=0;
 let goal = 0;
 
 function setGoal(){
-    const val = parseInt(document.getElementById("goalInput").value);
+const val = parseInt(document.getElementById("goalInput").value);
 
-    if(!val || val<=0){
-        alert("Enter a valid goal");
-        return;
-    }
+if(!val || val<=0){
+alert("Enter a valid goal");
+return;
+}
 
-    goal = val;
-    updateTotal();
+goal = val;
+updateTotal();
 }
 
 document.getElementById("workoutForm").addEventListener("submit",function(e){
@@ -139,9 +265,7 @@ btn.className="delete-btn";
 
 btn.onclick=function(){
 totalBurned-=burned;
-
 localStorage.setItem("burnedCalories", totalBurned);
-
 updateTotal();
 row.remove();
 };
@@ -150,7 +274,6 @@ del.appendChild(btn);
 
 totalBurned+=burned;
 
-// SAVE to browser storage
 localStorage.setItem("burnedCalories", totalBurned);
 
 updateTotal();
@@ -178,6 +301,7 @@ function logout(){
 sessionStorage.removeItem("loggedIn");
 window.location.href="login.html";
 }
+
 </script>
 
 </body>
