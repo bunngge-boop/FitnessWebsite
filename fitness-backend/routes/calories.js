@@ -14,26 +14,45 @@ await entry.save();
 res.json({message:"Calories saved"});
 
 }catch(err){
+
 res.json({error:err.message});
+
 }
 
 });
+
 
 router.get("/:userId", async(req,res)=>{
 
 try{
 
-const data = await Calories.find({
-userId:req.params.userId
-});
+const entries = await Calories.find({userId:req.params.userId});
 
-res.json(data);
+res.json(entries);
 
 }catch(err){
+
 res.json({error:err.message});
+
 }
 
 });
 
+
+router.delete("/:id", async(req,res)=>{
+
+try{
+
+await Calories.findByIdAndDelete(req.params.id);
+
+res.json({message:"Calories entry deleted"});
+
+}catch(err){
+
+res.json({error:err.message});
+
+}
+
+});
 
 module.exports = router;
