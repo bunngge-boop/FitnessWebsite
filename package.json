@@ -1,7 +1,10 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "cors": "^2.8.6",
     "express": "^5.2.1",
+=======
+>>>>>>> 321f5a1 (Updated backend database connection to MongoDB Atlas)
     "mongoose": "^9.3.0"
   }
 }
