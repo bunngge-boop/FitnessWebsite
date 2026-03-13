@@ -247,6 +247,22 @@ return;
 }
 
 const burned=Math.round(rate*minutes*intensity);
+
+const userId = localStorage.getItem("userId");
+
+fetch("http://localhost:5000/api/workout/add",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+userId:userId,
+workout:workout,
+minutes:minutes,
+intensity:intensity,
+calories:burned
+})
+});
 const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 
 const tbody=document.querySelector("#workoutTable tbody");

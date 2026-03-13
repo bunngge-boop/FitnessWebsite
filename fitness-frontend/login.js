@@ -2,28 +2,50 @@ const signUpBtn = document.getElementById('signUp');
 const signInBtn = document.getElementById('signIn');
 const container = document.getElementById('container');
 
-signUpBtn.addEventListener('click',()=>container.classList.add("right-panel-active"));
-signInBtn.addEventListener('click',()=>container.classList.remove("right-panel-active"));
+signUpBtn.addEventListener('click', () => container.classList.add("right-panel-active"));
+signInBtn.addEventListener('click', () => container.classList.remove("right-panel-active"));
 
 
-document.getElementById("loginForm").addEventListener("submit",function(e){
+//login
+document.getElementById("loginForm").addEventListener("submit", function(e){
+
 e.preventDefault();
 
-const user=document.getElementById("username").value;
-const pass=document.getElementById("password").value;
+const email = document.getElementById("username").value;
+const password = document.getElementById("password").value;
 
-const savedUser = localStorage.getItem("userName");
-const savedPass = localStorage.getItem("userPass");
+fetch("http://localhost:5000/api/auth/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+email:email,
+password:password
+})
+})
+.then(res=>res.json())
+.then(data=>{
 
-if(user === savedUser && pass === savedPass){
-sessionStorage.setItem("loggedIn", true);
+if(data.userId){
+
+sessionStorage.setItem("loggedIn","true");
+localStorage.setItem("userId",data.userId);
+localStorage.setItem("userName",data.name);
+
 window.location.href="main.html";
+
 }else{
-alert("Invalid login");
+alert(data.error);
 }
+
 });
 
-document.querySelector(".sign-up-container form").addEventListener("submit",function(e){
+});
+
+
+// SIignup
+document.querySelector(".sign-up-container form").addEventListener("submit", function(e){
 
 e.preventDefault();
 
@@ -36,10 +58,27 @@ alert("Please fill all fields");
 return;
 }
 
-localStorage.setItem("userName",name);
-localStorage.setItem("userEmail",email);
-localStorage.setItem("userPass",pass);
+fetch("http://localhost:5000/api/auth/signup",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+name:name,
+email:email,
+password:pass
+})
+})
+.then(res=>res.json())
+.then(data=>{
 
-window.location.href="userinfo.html";
+if(data.message){
+alert("Signup successful");
+window.location.href="login.html";
+}else{
+alert(data.error);
+}
+
+});
 
 });

@@ -16,15 +16,31 @@
 
 <script>
 
-function signup(){
+async function signup(){
 
-const user=document.getElementById("newUser").value;
-const pass=document.getElementById("newPass").value;
+const name=document.getElementById("newUser").value;
+const password=document.getElementById("newPass").value;
 
-localStorage.setItem("user",user);
-localStorage.setItem("pass",pass);
+const res = await fetch("http://localhost:5000/api/auth/signup",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+name:name,
+email:name,
+password:password
+})
+});
 
-window.location.href="userinfo.html";
+const data = await res.json();
+
+if(data.message){
+alert("Signup successful");
+window.location.href="login.html";
+}else{
+alert(data.error);
+}
 
 }
 

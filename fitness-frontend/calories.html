@@ -237,6 +237,20 @@ const s=document.getElementById("foodSelect");
 const food=s.options[s.selectedIndex].text;
 const cal=parseInt(document.getElementById("calories").value);
 
+const userId = localStorage.getItem("userId");
+
+fetch("http://localhost:5000/api/calories/add",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+userId:userId,
+food:food,
+calories:cal
+})
+});
+
 if(!cal){ alert("Select food first"); return; }
 
 const tbody=document.querySelector("#foodTable tbody");
