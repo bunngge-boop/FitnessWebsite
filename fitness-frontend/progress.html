@@ -1,249 +1,393 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Fitness Progress</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack – Progress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:#1a8cff; --bg:#0d1117; --surface:#161c24; --surface2:#1e2632;
+      --border:#2a3444; --text:#e8edf4; --muted:#8a9ab5;
+      --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
+      --head:'Bebas Neue',sans-serif; --body:'DM Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--body); padding-bottom:0; }
 
-<style>
+    /* HERO IMAGE */
+    .hero-banner { position:relative; width:100%; height:230px; overflow:hidden; }
+    .hero-banner img { width:100%; height:100%; object-fit:cover; object-position:center 35%; filter:brightness(0.4); display:block; }
+    .hero-banner-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 40%,rgba(13,17,23,0.85) 100%); }
+    .hero-banner-text { position:absolute; bottom:28px; left:32px; right:32px; }
+    .hero-banner-text h2 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; line-height:1.3; text-shadow:0 2px 12px rgba(0,0,0,0.6); }
 
-body{
-margin:0;
-font-family:Segoe UI;
-background:#0f1720;
-color:white;
-}
+    /* TOP BUTTON BAR */
+    .top-btn-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 32px; background:var(--surface); border-bottom:1px solid var(--border); }
+    .btn-back { background:var(--blue); color:#fff; border:none; border-radius:30px; padding:8px 22px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-back:hover { background:#3399ff; transform:translateY(-1px); }
+ 
 
-/* photo */
+    /* WRAP */
+    .wrap { max-width:900px; margin:0 auto; padding:28px 20px 0; }
 
-.photo{
-height:55vh;
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1554284126-aa88f22d8b74");
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-padding-left:80px;
-}
+    /* GREEN HERO CARD */
+    .prog-hero { background:linear-gradient(135deg,#071a10 0%,#0a2818 50%,#061510 100%); border:1px solid rgba(34,197,94,0.15); border-radius:18px; margin-bottom:22px; padding:28px 32px; position:relative; overflow:hidden; }
+    .prog-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(34,197,94,0.1) 0%,transparent 70%); }
+    .prog-hero::after  { content:''; position:absolute; bottom:-60px; left:50px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(26,140,255,0.06) 0%,transparent 70%); }
+    .hero-z { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .hero-left h1 { font-family:var(--head); font-size:34px; letter-spacing:2px; margin-bottom:4px; }
+    .hero-left p  { font-size:13px; color:var(--muted); margin-bottom:12px; }
+    .hero-pills   { display:flex; gap:8px; flex-wrap:wrap; }
+    .pill         { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:600; }
+    .p-green { background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+    .p-blue  { background:rgba(26,140,255,0.12); color:var(--blue);  border:1px solid rgba(26,140,255,0.25); }
+    .p-amber { background:rgba(245,158,11,0.12); color:var(--amber); border:1px solid rgba(245,158,11,0.25); }
+    .hero-right { text-align:center; }
+    .big-pct { font-family:var(--head); font-size:64px; letter-spacing:2px; color:var(--green); line-height:1; }
+    .big-sub { font-size:12px; color:var(--muted); }
 
-.hero h1{
-font-size:48px;
-max-width:600px;
-}
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+    .scard     { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
+    .scard-ico { font-size:18px; margin-bottom:6px; }
+    .scard-val { font-family:var(--head); font-size:24px; letter-spacing:1px; line-height:1; margin-bottom:3px; }
+    .scard-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
 
-/* SECTION */
+    /* PERIOD TABS */
+    .ptabs { display:flex; gap:3px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:3px; }
+    .ptab  { padding:4px 13px; border-radius:6px; font-size:11px; font-weight:500; cursor:pointer; color:var(--muted); border:none; background:none; font-family:var(--body); transition:all .15s; }
+    .ptab.active { background:var(--blue); color:#fff; }
 
-.section{
-padding:70px 90px;
-}
+    /* CARDS */
+    .card    { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
+    .card-h  { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .card-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+    .grid2   { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+    .mb16    { margin-bottom:16px; }
 
-/* CARDS */
+    /* WEIGHT GOAL */
+    .goal-mega  { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:16px; }
+    .goal-meta  { display:flex; gap:28px; margin:12px 0 14px; flex-wrap:wrap; }
+    .gm-item    { display:flex; flex-direction:column; gap:3px; }
+    .gm-lbl     { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .gm-val     { font-size:15px; font-weight:600; }
+    .big-track  { height:14px; background:var(--surface2); border-radius:10px; overflow:hidden; position:relative; margin-bottom:8px; }
+    .big-fill   { height:100%; background:linear-gradient(90deg,#16a34a,var(--green)); border-radius:10px; position:relative; }
+    .track-dot  { position:absolute; right:-1px; top:50%; transform:translateY(-50%); width:20px; height:20px; background:#fff; border-radius:50%; border:3px solid var(--green); }
+    .track-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
 
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:25px;
-}
+    /* CHART */
+    .cwrap { position:relative; width:100%; }
 
-.card{
-background:#1f2937;
-padding:30px;
-border-radius:15px;
-text-align:center;
-transition:0.3s;
-}
+    /* WEIGHT LOG */
+    .wlog-row   { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid rgba(42,52,68,0.5); }
+    .wlog-row:last-child { border-bottom:none; }
+    .wlog-date  { font-size:12px; color:var(--muted); width:80px; }
+    .wlog-w     { font-size:14px; font-weight:600; width:60px; }
+    .wlog-bar   { flex:1; height:4px; background:var(--surface2); border-radius:4px; margin:0 12px; overflow:hidden; }
+    .wlog-bfill { height:100%; background:var(--green); border-radius:4px; }
+    .wchg  { font-size:11px; padding:2px 8px; border-radius:6px; white-space:nowrap; }
+    .wdown { background:rgba(34,197,94,0.1); color:var(--green); }
+    .wup   { background:rgba(239,68,68,0.1);  color:var(--red); }
 
-.card:hover{
-transform:translateY(-6px);
-}
+    /* TABLE */
+    .ptable { width:100%; border-collapse:collapse; font-size:12px; }
+    .ptable th { padding:9px 12px; text-align:left; color:var(--muted); font-weight:500; font-size:10px; text-transform:uppercase; letter-spacing:.6px; border-bottom:1px solid var(--border); }
+    .ptable td { padding:9px 12px; border-bottom:1px solid rgba(42,52,68,0.4); }
+    .ptable tr:last-child td { border-bottom:none; }
+    .ptable tr:nth-child(even) td { background:rgba(30,38,50,0.3); }
 
-.card h2{
-color:#1e90ff;
-}
+    /* STREAK */
+    .streak-days { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+    .sday { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; }
+    .sday.done  { background:rgba(34,197,94,0.2); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+    .sday.today { background:var(--green); color:#fff; }
+    .sday.miss  { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
 
-/* GOAL */
-
-.goal-box{
-margin-top:40px;
-background:#1f2937;
-padding:40px;
-border-radius:15px;
-}
-
-.progress-bar{
-height:20px;
-background:#333;
-border-radius:10px;
-margin-top:10px;
-overflow:hidden;
-}
-
-.progress{
-height:100%;
-width:60%;
-background:#1e90ff;
-}
-
-/* TABLE */
-
-table{
-width:100%;
-margin-top:30px;
-border-collapse:collapse;
-background:#1f2937;
-border-radius:10px;
-overflow:hidden;
-}
-
-th{
-background:#1e90ff;
-padding:12px;
-}
-
-td{
-padding:12px;
-text-align:center;
-}
-
-tr:nth-child(even){
-background:#18202d;
-}
-
-/* CTA */
-
-.cta{
-background:#1e90ff;
-text-align:center;
-padding:60px;
-}
-
-.cta h2{
-font-size:30px;
-margin-bottom:20px;
-}
-
-button{
-padding:14px 28px;
-border:none;
-border-radius:30px;
-background:white;
-color:#1e90ff;
-font-weight:600;
-cursor:pointer;
-}
-
-</style>
+    /* FOOTER CTA */
+    .footer-cta { background:var(--blue); text-align:center; padding:52px 20px; margin-top:40px; }
+    .footer-cta h3 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; margin-bottom:10px; }
+    .footer-cta p  { font-size:13px; color:rgba(255,255,255,0.75); margin-bottom:24px; }
+    .btn-todash { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.6); border-radius:30px; padding:10px 30px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-todash:hover { background:rgba(255,255,255,0.15); }
+  </style>
 </head>
-
 <body>
 
+  <!-- HERO IMAGE BANNER -->
+  <div class="hero-banner">
+    <img
+      src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80"
+      alt="Gym background"
+      onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#071a10,#0a2818)';"
+    >
+    <div class="hero-banner-overlay"></div>
+    <div class="hero-banner-text">
+      <h2>Track Your Fitness Journey and See Your Progress Over Time</h2>
+    </div>
+  </div>
 
-<section class="photo">
+  <!-- BACK + LOGOUT BUTTONS -->
+  <div class="top-btn-bar">
+<a href="main.html"><button class="btn-back">&#8592; Back to Dashboard</button></a>
+    <button class="btn-back" onclick="logout()">Logout</button>
+  </div>
 
-<h1>Track Your Fitness Journey and See Your Progress Over Time</h1>
+  <div class="wrap">
 
-</section>
+    <!-- GREEN HERO CARD -->
+    <div class="prog-hero">
+      <div class="hero-z">
+        <div class="hero-left">
+          <h1>TRACK YOUR JOURNEY</h1>
+          <p>78 days of data · Tracking since January 2025</p>
+          <div class="hero-pills">
+            <span class="pill p-green">✅ On Track</span>
+            <span class="pill p-blue">📊 78 Days Logged</span>
+            <span class="pill p-amber">🔥 12-Day Streak</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="big-pct">50%</div>
+          <div class="big-sub">Weight goal reached</div>
+        </div>
+      </div>
+    </div>
 
-<section class="section">
+    <!-- QUICK STATS -->
+    <div class="stats-row">
+      <div class="scard"><div class="scard-ico">🔥</div><div class="scard-val" style="color:var(--red)">736</div><div class="scard-lbl">Cal Today</div></div>
+      <div class="scard"><div class="scard-ico">🚶</div><div class="scard-val" style="color:var(--blue)">7,420</div><div class="scard-lbl">Steps Today</div></div>
+      <div class="scard"><div class="scard-ico">💧</div><div class="scard-val" style="color:#06b6d4">5/8</div><div class="scard-lbl">Glasses</div></div>
+      <div class="scard"><div class="scard-ico">⚖️</div><div class="scard-val" style="color:var(--green)">70kg</div><div class="scard-lbl">Weight</div></div>
+      <div class="scard"><div class="scard-ico">💪</div><div class="scard-val" style="color:var(--amber)">48</div><div class="scard-lbl">Workouts</div></div>
+    </div>
 
-<h2>Your Current Stats</h2>
+    <!-- WEIGHT GOAL -->
+    <div class="goal-mega">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="card-title">⚖️ Weight Loss Goal</div>
+          <div class="goal-meta">
+            <div class="gm-item"><div class="gm-lbl">Start</div><div class="gm-val">75 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Current</div><div class="gm-val" style="color:var(--blue)">70 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Goal</div><div class="gm-val" style="color:var(--green)">65 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Lost</div><div class="gm-val" style="color:var(--green)">5 kg 🎉</div></div>
+            <div class="gm-item"><div class="gm-lbl">Remaining</div><div class="gm-val" style="color:var(--amber)">5 kg</div></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:var(--head);font-size:42px;color:var(--green);line-height:1;">50%</div>
+          <div style="font-size:11px;color:var(--muted);">completed</div>
+        </div>
+      </div>
+      <div class="big-track"><div class="big-fill" style="width:50%"><div class="track-dot"></div></div></div>
+      <div class="track-labels">
+        <span>75 kg (start)</span>
+        <span style="color:var(--green);font-weight:500;">Halfway there!</span>
+        <span>65 kg (goal)</span>
+      </div>
+    </div>
 
-<div class="cards">
+    <!-- CHARTS: Calories + Steps -->
+    <div class="grid2 mb16">
+      <div class="card">
+        <div class="card-h">
+          <div class="card-title">🔥 Calories Burned</div>
+          <div class="ptabs">
+            <button class="ptab active" onclick="switchTab(this,'cal','week')">Week</button>
+            <button class="ptab" onclick="switchTab(this,'cal','month')">Month</button>
+          </div>
+        </div>
+        <div class="cwrap" style="height:180px;"><canvas id="calChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h">
+          <div class="card-title">🚶 Daily Steps</div>
+          <div class="ptabs">
+            <button class="ptab active" onclick="switchTab(this,'steps','week')">Week</button>
+            <button class="ptab" onclick="switchTab(this,'steps','month')">Month</button>
+          </div>
+        </div>
+        <div class="cwrap" style="height:180px;"><canvas id="stepsChart"></canvas></div>
+      </div>
+    </div>
 
-<div class="card">
-<h3>Calories Burned</h3>
-<h2>588 kcal</h2>
-</div>
+    <!-- CHARTS: Weight Trend + Log -->
+    <div class="grid2 mb16">
+      <div class="card">
+        <div class="card-h"><div class="card-title">📉 Weight Trend</div></div>
+        <div class="cwrap" style="height:200px;"><canvas id="weightChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><div class="card-title">📋 Weight Log</div></div>
+        <div id="wlog"></div>
+      </div>
+    </div>
 
-<div class="card">
-<h3>Steps Today</h3>
-<h2>7420</h2>
-</div>
+    <!-- CHARTS: Workout Mix + Water -->
+    <div class="grid2 mb16">
+      <div class="card">
+        <div class="card-h"><div class="card-title">🏋️ Workout Mix (This Month)</div></div>
+        <div style="display:flex;align-items:center;gap:20px;">
+          <div class="cwrap" style="height:160px;width:160px;flex-shrink:0;"><canvas id="donutChart"></canvas></div>
+          <div id="donut-legend" style="display:flex;flex-direction:column;gap:8px;font-size:12px;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><div class="card-title">💧 Water Intake (This Week)</div></div>
+        <div class="cwrap" style="height:160px;"><canvas id="waterChart"></canvas></div>
+      </div>
+    </div>
 
-<div class="card">
-<h3>Water Intake</h3>
-<h2>3 / 8 Glasses</h2>
-</div>
+    <!-- STREAK -->
+    <div class="card mb16">
+      <div class="card-h"><div class="card-title">🔥 Current Streak — March</div></div>
+      <div style="font-family:var(--head);font-size:42px;color:var(--amber);letter-spacing:1px;margin:8px 0 4px;">12 Days</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Personal best: 18 days</div>
+      <div class="streak-days" id="streak-days"></div>
+    </div>
 
-<div class="card">
-<h3>Current Weight</h3>
-<h2>70 kg</h2>
-</div>
+    <!-- DAILY LOG TABLE -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-title">📋 Daily Progress Log</div>
+        <span style="font-size:11px;color:var(--muted);">Last 7 days</span>
+      </div>
+      <table class="ptable">
+        <thead>
+          <tr><th>Date</th><th>Workout</th><th>Cal Burned</th><th>Steps</th><th>Water</th><th>Weight</th><th>Status</th></tr>
+        </thead>
+        <tbody id="daily-table"></tbody>
+      </table>
+    </div>
 
-</div>
+  </div><!-- /.wrap -->
 
-</section>
+  <!-- FOOTER CTA -->
+  <div class="footer-cta">
+    <h3>STAY CONSISTENT AND ACHIEVE YOUR FITNESS GOALS</h3>
+    <p>Every workout counts. Keep pushing — you're halfway there!</p>
+    <a href="main.html"><button class="btn-todash">&#8592; Back to Dashboard</button></a>
+  </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    const C = { blue:'#1a8cff', green:'#22c55e', amber:'#f59e0b', red:'#ef4444', cyan:'#06b6d4', muted:'#8a9ab5', grid:'rgba(255,255,255,0.05)' };
 
-<section class="section">
+    const wkLabels   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const calWeek    = [580,820,740,910,736,620,0];
+    const calMonth   = [580,820,740,910,736,620,490,560,600,520,740,820,680,710,560,600,530,740,910,736,480,610,720,540,670,590,750,800,0,0];
+    const stepsWeek  = [6800,9100,8200,10200,7420,8800,0];
+    const stepsMonth = calMonth.map(v => v ? Math.round(v * 11) : 0);
 
-<div class="goal-box">
+    const mOpts = () => ({
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ grid:{color:C.grid}, ticks:{color:C.muted,font:{size:10}} },
+        y:{ grid:{color:C.grid}, ticks:{color:C.muted,font:{size:10}} }
+      }
+    });
 
-<h2>Weight Loss Goal</h2>
+    const calChart = new Chart(document.getElementById('calChart'),{
+      type:'bar',
+      data:{ labels:wkLabels, datasets:[{data:calWeek, backgroundColor:'rgba(239,68,68,0.7)', borderRadius:5, borderSkipped:false}] },
+      options:mOpts()
+    });
 
-<p>Start Weight: 72 kg</p>
-<p>Current Weight: 70 kg</p>
-<p>Goal Weight: 65 kg</p>
+    const stepsChart = new Chart(document.getElementById('stepsChart'),{
+      type:'bar',
+      data:{ labels:wkLabels, datasets:[{data:stepsWeek, backgroundColor:'rgba(26,140,255,0.7)', borderRadius:5, borderSkipped:false}] },
+      options:mOpts()
+    });
 
-<div class="progress-bar">
-<div class="progress"></div>
-</div>
+    new Chart(document.getElementById('weightChart'),{
+      type:'line',
+      data:{
+        labels:['Jan 1','Jan 15','Feb 1','Feb 15','Mar 1','Mar 7','Mar 14','Mar 17','Today'],
+        datasets:[{ data:[75,74.5,73.8,73,72,71.5,70.9,70.5,70], borderColor:C.green, backgroundColor:'rgba(34,197,94,0.07)', borderWidth:2, pointBackgroundColor:C.green, pointRadius:4, tension:0.4, fill:true }]
+      },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:9},maxRotation:30}}, y:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}},min:64,max:77} } }
+    });
 
-</div>
+    const donutData = [
+      {label:'Strength',val:12,color:'#1a8cff'},
+      {label:'Cardio',  val:8, color:'#ef4444'},
+      {label:'Running', val:6, color:'#22c55e'},
+      {label:'Cycling', val:4, color:'#f59e0b'}
+    ];
+    new Chart(document.getElementById('donutChart'),{
+      type:'doughnut',
+      data:{ labels:donutData.map(d=>d.label), datasets:[{data:donutData.map(d=>d.val), backgroundColor:donutData.map(d=>d.color), borderWidth:0, hoverOffset:6}] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{display:false}} }
+    });
+    const leg = document.getElementById('donut-legend');
+    donutData.forEach(d => {
+      leg.innerHTML += `<div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0;"></div><span style="color:var(--muted);">${d.label}</span><span style="margin-left:auto;font-weight:500;">${d.val}</span></div>`;
+    });
 
-</section>
+    new Chart(document.getElementById('waterChart'),{
+      type:'bar',
+      data:{ labels:wkLabels, datasets:[{data:[6,8,7,8,5,7,0],backgroundColor:'rgba(6,182,212,0.7)',borderRadius:5,borderSkipped:false},{data:[8,8,8,8,8,8,8],backgroundColor:'rgba(6,182,212,0.1)',borderRadius:5,borderSkipped:false}] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}}}, y:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}},max:10} } }
+    });
 
+    // Weight log
+    const wlogData = [
+      {date:'Today',     w:'70.0', chg:'▼ -0.5', down:true,  pct:50},
+      {date:'Yesterday', w:'70.5', chg:'▼ -0.2', down:true,  pct:45},
+      {date:'Mar 16',    w:'70.7', chg:'▼ -0.3', down:true,  pct:43},
+      {date:'Mar 15',    w:'71.0', chg:'▲ +0.1', down:false, pct:40},
+      {date:'Mar 14',    w:'70.9', chg:'▼ -0.5', down:true,  pct:41},
+      {date:'Mar 13',    w:'71.4', chg:'▼ -0.1', down:true,  pct:36},
+    ];
+    const wlogEl = document.getElementById('wlog');
+    wlogData.forEach(r => {
+      wlogEl.innerHTML += `<div class="wlog-row"><span class="wlog-date">${r.date}</span><span class="wlog-w">${r.w} kg</span><div class="wlog-bar"><div class="wlog-bfill" style="width:${r.pct}%"></div></div><span class="wchg ${r.down?'wdown':'wup'}">${r.chg}</span></div>`;
+    });
 
+    // Streak
+    const sd = document.getElementById('streak-days');
+    for (let i = 1; i <= 18; i++) {
+      const cls = i < 12 ? 'done' : i === 12 ? 'today' : 'miss';
+      sd.innerHTML += `<div class="sday ${cls}">${i}</div>`;
+    }
 
-<section class="section">
+    // Daily table
+    const rows = [
+      {date:'Mar 18',wo:'Strength',cal:736, steps:'7,420', water:'5/8',wt:'70.0',ok:true},
+      {date:'Mar 17',wo:'Running', cal:820, steps:'9,100', water:'8/8',wt:'70.5',ok:true},
+      {date:'Mar 16',wo:'Cycling', cal:650, steps:'6,800', water:'6/8',wt:'70.7',ok:true},
+      {date:'Mar 15',wo:'Rest',    cal:340, steps:'3,200', water:'7/8',wt:'71.0',ok:false},
+      {date:'Mar 14',wo:'Strength',cal:740, steps:'8,200', water:'5/8',wt:'70.9',ok:true},
+      {date:'Mar 13',wo:'Cardio',  cal:910, steps:'10,200',water:'8/8',wt:'71.4',ok:true},
+      {date:'Mar 12',wo:'Running', cal:760, steps:'8,800', water:'7/8',wt:'71.5',ok:true},
+    ];
+    const tb = document.getElementById('daily-table');
+    rows.forEach(r => {
+      tb.innerHTML += `<tr><td style="color:var(--muted);">${r.date}</td><td>${r.wo}</td><td style="color:var(--red);font-weight:500;">${r.cal} kcal</td><td style="color:var(--blue);">${r.steps}</td><td>💧 ${r.water}</td><td style="font-weight:500;">${r.wt} kg</td><td><span class="wchg ${r.ok?'wdown':'wup'}">${r.ok?'✓ Good':'— Rest'}</span></td></tr>`;
+    });
 
-<h2>Daily Progress</h2>
-
-<table>
-
-<tr>
-<th>Date</th>
-<th>Calories Burned</th>
-<th>Steps</th>
-<th>Weight</th>
-</tr>
-
-<tr>
-<td>Day 1</td>
-<td>420 kcal</td>
-<td>6500</td>
-<td>71 kg</td>
-</tr>
-
-<tr>
-<td>Day 2</td>
-<td>520 kcal</td>
-<td>7100</td>
-<td>70.5 kg</td>
-</tr>
-
-<tr>
-<td>Day 3</td>
-<td>588 kcal</td>
-<td>7420</td>
-<td>70 kg</td>
-</tr>
-
-</table>
-
-</section>
-
-
-<!-- CTA -->
-
-<section class="cta">
-
-<h2>Stay Consistent and Achieve Your Fitness Goals</h2>
-
-<button>Back to Dashboard</button>
-
-</section>
-
+    // Period switcher
+    const calDataMap   = { week:{labels:wkLabels,data:calWeek},   month:{labels:Array.from({length:30},(_,i)=>String(i+1)),data:calMonth}   };
+    const stepsDataMap = { week:{labels:wkLabels,data:stepsWeek}, month:{labels:Array.from({length:30},(_,i)=>String(i+1)),data:stepsMonth} };
+    function switchTab(btn, type, period) {
+      btn.closest('.ptabs').querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const chart = type === 'cal' ? calChart : stepsChart;
+      const d     = type === 'cal' ? calDataMap[period] : stepsDataMap[period];
+      chart.data.labels = d.labels;
+      chart.data.datasets[0].data = d.data;
+      chart.update();
+    }
+//logout
+    function logout(){
+sessionStorage.removeItem("loggedIn");
+window.location.href="login.html";
+}
+  </script>
 
 </body>
 </html>

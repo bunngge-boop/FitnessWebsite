@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack – Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:#1a8cff; --bg:#0d1117; --surface:#161c24; --surface2:#1e2632;
+      --border:#2a3444; --text:#e8edf4; --muted:#8a9ab5;
+      --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
+      --head:'Bebas Neue',sans-serif; --body:'DM Sans',sans-serif;
+    }
+    body { background:var(--bg); color:var(--text); font-family:var(--body); padding-bottom:0; }
+
+    /* ── HERO ── */
+    .hero-banner { position:relative; width:100%; height:230px; overflow:hidden; }
+    .hero-banner img { width:100%; height:100%; object-fit:cover; object-position:center 30%; filter:brightness(0.38); display:block; }
+    .hero-banner-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 35%,rgba(13,17,23,0.88) 100%); }
+    .hero-banner-text { position:absolute; bottom:28px; left:32px; right:32px; }
+    .hero-banner-text h2 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; line-height:1.3; text-shadow:0 2px 12px rgba(0,0,0,0.6); }
+    .hero-banner-text p  { font-size:13px; color:rgba(255,255,255,0.65); margin-top:4px; }
+
+    /* ── TOP BTN BAR ── */
+    .top-btn-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 32px; background:var(--surface); border-bottom:1px solid var(--border); }
+    .btn-back   { background:var(--blue); color:#fff; border:none; border-radius:30px; padding:8px 22px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-back:hover { background:#3399ff; transform:translateY(-1px); }
+    .btn-logout { background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.2); border-radius:30px; padding:8px 22px; font-family:var(--body); font-size:13px; cursor:pointer; transition:all .2s; }
+    .btn-logout:hover { border-color:var(--red); color:var(--red); }
+
+    /* ── WRAP ── */
+    .wrap { max-width:900px; margin:0 auto; padding:28px 20px 0; }
+
+    /* ── CARDS ── */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:18px; }
+    .section-title { font-family:var(--head); font-size:20px; letter-spacing:1.5px; color:var(--text); margin-bottom:4px; }
+    .section-sub   { font-size:12px; color:var(--muted); margin-bottom:20px; }
+    .card-head     { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .card-head-icon { width:22px; height:22px; border-radius:6px; background:rgba(26,140,255,0.12); display:flex; align-items:center; justify-content:center; font-size:11px; }
+
+    /* ── FORM ── */
+    .form-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .form-grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+    .fl { display:flex; flex-direction:column; gap:6px; }
+    .fl label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; font-weight:500; }
+    .fl input, .fl select {
+      background:var(--surface2); border:1px solid var(--border); border-radius:10px;
+      padding:10px 14px; color:var(--text); font-family:var(--body); font-size:14px;
+      outline:none; transition:border-color .2s; width:100%;
+    }
+    .fl input:focus, .fl select:focus { border-color:var(--blue); }
+    .fl select option { background:var(--surface2); }
+    .fl input::placeholder { color:var(--muted); }
+
+    /* ── BUTTONS ── */
+    .btn-save  { background:var(--blue);  color:#fff; border:none; border-radius:10px; padding:11px 28px; font-family:var(--body); font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-save:hover  { background:#3399ff; transform:translateY(-1px); }
+    .btn-edit  { background:transparent; color:var(--blue); border:1px solid rgba(26,140,255,0.35); border-radius:10px; padding:9px 22px; font-family:var(--body); font-size:13px; font-weight:500; cursor:pointer; transition:all .2s; }
+    .btn-edit:hover  { background:rgba(26,140,255,0.08); }
+    .btn-green { background:var(--green); }
+    .btn-green:hover { background:#34d467; }
+    .btn-calc  { background:var(--blue); color:#fff; border:none; border-radius:10px; padding:11px 28px; font-family:var(--body); font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-calc:hover  { background:#3399ff; transform:translateY(-1px); }
+
+    /* ── DISPLAY PANEL (shown after save) ── */
+    .display-panel { display:none; }
+    .display-panel.show { display:block; }
+    .edit-form { display:block; }
+    .edit-form.hidden { display:none; }
+
+    /* profile card inside display */
+    .pcard { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:20px; }
+    .pcard-top { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+    .pcard-avatar { width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg,#1a6fcc,#0d3d7a); display:flex; align-items:center; justify-content:center; font-family:var(--head); font-size:22px; border:3px solid rgba(26,140,255,0.4); flex-shrink:0; }
+    .pcard-name   { font-family:var(--head); font-size:22px; letter-spacing:1.5px; }
+    .pcard-sub    { font-size:12px; color:var(--muted); margin-top:2px; }
+    .info-grid  { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }
+    .info-row   { display:flex; align-items:baseline; gap:8px; padding:8px 0; border-bottom:1px solid rgba(42,52,68,0.5); }
+    .info-row:last-child { border-bottom:none; }
+    .info-key   { font-size:11px; color:var(--muted); width:130px; flex-shrink:0; text-transform:uppercase; letter-spacing:.4px; }
+    .info-val   { font-size:13px; font-weight:500; }
+    .badges     { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:14px; }
+    .badge { padding:4px 11px; border-radius:20px; font-size:11px; font-weight:600; }
+    .b-blue  { background:rgba(26,140,255,0.14); color:var(--blue);  border:1px solid rgba(26,140,255,0.28); }
+    .b-green { background:rgba(34,197,94,0.11);  color:var(--green); border:1px solid rgba(34,197,94,0.22); }
+    .b-amber { background:rgba(245,158,11,0.11); color:var(--amber); border:1px solid rgba(245,158,11,0.22); }
+    .edit-row { display:flex; justify-content:flex-end; margin-top:14px; }
+
+    /* ── RESULT BOX ── */
+    .result-box { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:18px; margin-top:18px; display:none; }
+    .result-box.show { display:block; }
+    .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px; }
+    .result-stat { text-align:center; }
+    .result-val  { font-family:var(--head); font-size:28px; letter-spacing:1px; line-height:1; margin-bottom:3px; }
+    .result-lbl  { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+
+    /* ── SCALE BAR ── */
+    .scale-bar-wrap { margin-top:4px; }
+    .scale-track { position:relative; height:14px; border-radius:10px; overflow:visible; margin-bottom:6px; }
+    .scale-pointer { position:absolute; top:-5px; width:4px; height:24px; background:#fff; border-radius:2px; transform:translateX(-50%); box-shadow:0 0 6px rgba(0,0,0,0.5); transition:left .6s ease; }
+    .scale-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); line-height:1.3; }
+    .cat-pill { display:inline-block; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; margin-top:10px; }
+
+    /* ── GOAL WEIGHT ── */
+    .gp-track { height:12px; background:var(--surface); border-radius:10px; overflow:hidden; margin:10px 0 6px; border:1px solid var(--border); }
+    .gp-fill  { height:100%; background:linear-gradient(90deg,#16a34a,var(--green)); border-radius:10px; transition:width .6s ease; }
+    .gp-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+
+    /* ── WEEKLY GOALS ── */
+    .goal-item { margin-bottom:13px; }
+    .goal-item:last-child { margin-bottom:0; }
+    .goal-top  { display:flex; justify-content:space-between; margin-bottom:5px; }
+    .goal-name { font-size:13px; font-weight:500; }
+    .goal-nums { font-size:11px; color:var(--muted); }
+    .track { height:6px; background:var(--surface2); border-radius:10px; overflow:hidden; }
+    .fill  { height:100%; border-radius:10px; }
+
+    /* ── ACHIEVEMENTS ── */
+    .ach-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .ach { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; transition:border-color .2s; }
+    .ach:hover:not(.locked) { border-color:var(--blue); }
+    .ach-ico  { font-size:26px; margin-bottom:7px; }
+    .ach-name { font-size:12px; font-weight:600; margin-bottom:2px; }
+    .ach-desc { font-size:10px; color:var(--muted); }
+    .ach.locked { opacity:.35; }
+
+    /* ── TWO COL ── */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+
+    /* ── ALERT ── */
+    .err-msg { font-size:12px; color:var(--red); margin-top:8px; display:none; }
+    .err-msg.show { display:block; }
+
+    /* ── FOOTER ── */
+    .footer-cta { background:var(--blue); text-align:center; padding:52px 20px; margin-top:40px; }
+    .footer-cta h3 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; margin-bottom:10px; }
+    .footer-cta p  { font-size:13px; color:rgba(255,255,255,0.75); margin-bottom:24px; }
+    .btn-todash { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.6); border-radius:30px; padding:10px 30px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .btn-todash:hover { background:rgba(255,255,255,0.15); }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO IMAGE ── -->
+<div class="hero-banner">
+  <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80" alt="Fitness"
+       onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0a1628,#0d2040)';">
+  <div class="hero-banner-overlay"></div>
+  <div class="hero-banner-text">
+    <h2>Your Personal Fitness Profile</h2>
+    <p>Enter your details to personalise your dashboard</p>
+  </div>
+</div>
+
+<!-- ── TOP BAR ── -->
+<div class="top-btn-bar">
+ <a href="main.html"><button class="btn-back">&#8592; Back to Dashboard</button></a> 
+  <button class="btn-logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="wrap">
+
+  <!--1. PERSONAL INFO -->
+  <div class="card">
+    <div class="section-title">👤 Personal Information</div>
+    <div class="section-sub">Fill in your details and click Save — your profile card will appear below</div>
+
+    <!-- EDIT FORM -->
+    <div class="edit-form" id="pi-form">
+      <div class="form-grid2">
+        <div class="fl"><label>Full Name</label><input type="text" id="pi-name" placeholder="Name"></div>
+        <div class="fl"><label>Username</label><input type="text" id="pi-handle" placeholder="e.g. @username"></div>
+      </div>
+      <div class="form-grid3">
+        <div class="fl"><label>Age</label><input type="number" id="pi-age" placeholder="24" min="1" max="120"></div>
+        <div class="fl"><label>Gender</label>
+          <select id="pi-gender">
+            <option value="">Select</option>
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fl"><label>Location</label><input type="text" id="pi-location" placeholder="State, Country"></div>
+      </div>
+      <div class="form-grid2">
+        <div class="fl"><label>Fitness Goal</label>
+          <select id="pi-goal">
+            <option value="">Select a goal</option>
+            <option>Lose Weight</option><option>Build Muscle</option>
+            <option>Improve Endurance</option><option>Maintain Weight</option>
+          </select>
+        </div>
+        <div class="fl"><label>Activity Level</label>
+          <select id="pi-activity">
+            <option value="">Select level</option>
+            <option>Sedentary (little/no exercise)</option>
+            <option>Lightly Active (1–3 days/week)</option>
+            <option>Moderately Active (3–5 days/week)</option>
+            <option>Very Active (6–7 days/week)</option>
+            <option>Athlete (2x/day)</option>
+          </select>
+        </div>
+      </div>
+      <div class="err-msg" id="pi-err">⚠ Please enter at least your full name.</div>
+      <button class="btn-save" onclick="savePersonalInfo()">💾 Save Profile</button>
+    </div>
+
+    <!-- DISPLAY PANEL (hidden until saved) -->
+    <div class="display-panel" id="pi-display">
+      <div class="pcard">
+        <div class="pcard-top">
+          <div class="pcard-avatar" id="d-avatar">?</div>
+          <div>
+            <div class="pcard-name" id="d-name">—</div>
+            <div class="pcard-sub"  id="d-sub">—</div>
+          </div>
+        </div>
+        <div class="badges">
+          <span class="badge b-blue">💪 Active Member</span>
+          <span class="badge b-green" id="d-goal-badge">—</span>
+          <span class="badge b-amber" id="d-activity-badge">—</span>
+        </div>
+        <div class="info-grid">
+          <div>
+            <div class="info-row"><span class="info-key">Age</span><span class="info-val" id="d-age">—</span></div>
+            <div class="info-row"><span class="info-key">Gender</span><span class="info-val" id="d-gender">—</span></div>
+            <div class="info-row"><span class="info-key">Location</span><span class="info-val" id="d-location">—</span></div>
+          </div>
+          <div>
+            <div class="info-row"><span class="info-key">Fitness Goal</span><span class="info-val" id="d-fitgoal">—</span></div>
+            <div class="info-row"><span class="info-key">Activity Level</span><span class="info-val" id="d-activity">—</span></div>
+            <div class="info-row"><span class="info-key">Member Since</span><span class="info-val">Jan 2025</span></div>
+          </div>
+        </div>
+        <div class="edit-row">
+          <button class="btn-edit" onclick="editPersonalInfo()">✏️ Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  2. BMI CALCULATOR-->
+  <div class="card">
+    <div class="section-title">🧮 BMI Calculator</div>
+    <div class="section-sub">Enter height and weight — save to see your BMI with a visual scale</div>
+
+    <div class="edit-form" id="bmi-form">
+      <div class="form-grid3">
+        <div class="fl"><label>Height (cm)</label><input type="number" id="bmi-h" placeholder="e.g. 175" min="50" max="250"></div>
+        <div class="fl"><label>Weight (kg)</label><input type="number" id="bmi-w" placeholder="e.g. 70"  min="10" max="400"></div>
+        <div style="display:flex;align-items:flex-end;">
+          <button class="btn-save" style="width:100%;" onclick="saveBMI()">Calculate &amp; Save</button>
+        </div>
+      </div>
+      <div class="err-msg" id="bmi-err">⚠ Please enter valid height and weight.</div>
+    </div>
+
+    <div class="display-panel" id="bmi-display">
+      <div class="result-grid">
+        <div class="result-stat">
+          <div class="result-val" id="d-bmi">—</div>
+          <div class="result-lbl">Your BMI</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-val" id="d-bmi-cat" style="font-size:18px;">—</div>
+          <div class="result-lbl">Category</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-val" id="d-bmi-ideal">—</div>
+          <div class="result-lbl">Ideal Range (kg)</div>
+        </div>
+      </div>
+
+      <!-- BMI SCALE -->
+      <div class="scale-bar-wrap">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;">BMI Scale</div>
+        <div class="scale-track" style="background:linear-gradient(90deg,#3b82f6 0%,#22c55e 28%,#f59e0b 55%,#ef4444 78%,#7c3aed 100%);">
+          <div class="scale-pointer" id="bmi-ptr" style="left:5%"></div>
+        </div>
+        <div class="scale-labels">
+          <span>Underweight<br>&lt;18.5</span>
+          <span>Normal<br>18.5–24.9</span>
+          <span>Overweight<br>25–29.9</span>
+          <span>Obese<br>30–34.9</span>
+          <span>Severely<br>&gt;35</span>
+        </div>
+        <span class="cat-pill" id="bmi-pill">—</span>
+      </div>
+      <div class="edit-row" style="margin-top:14px;">
+        <button class="btn-edit" onclick="editSection('bmi')">✏️ Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. BODY FAT % CALCULATOR-->
+   
+  <div class="card">
+    <div class="section-title">💪 Body Fat % Calculator</div>
+    <div class="section-sub">
+      Uses the official U.S. Navy / Hodgdon–Beckett formula (±3–4% accuracy).
+      Measure waist at navel level (men) or narrowest point (women). Neck just below the Adam's apple.
+    </div>
+
+    <div class="edit-form" id="fat-form">
+      <div class="form-grid2">
+        <div class="fl"><label>Gender</label>
+          <select id="fat-gender" onchange="toggleHip()">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="fl"><label>Height (cm)</label><input type="number" id="fat-h" placeholder="e.g. 175" min="100" max="250"></div>
+      </div>
+      <div class="form-grid3">
+        <div class="fl"><label>Neck (cm)</label><input type="number" id="fat-neck" placeholder="e.g. 38" min="20" max="80"></div>
+        <div class="fl"><label>Waist (cm) — at navel</label><input type="number" id="fat-waist" placeholder="e.g. 85" min="40" max="200"></div>
+        <div class="fl" id="fat-hip-wrap" style="opacity:.4;">
+          <label>Hip (cm) <span style="font-size:10px;color:var(--muted);">females only</span></label>
+          <input type="number" id="fat-hip" placeholder="e.g. 95" min="40" max="200" disabled>
+        </div>
+      </div>
+      <div class="err-msg" id="fat-err">⚠ Please fill in all required fields.</div>
+      <button class="btn-save btn-green" onclick="saveFat()">Calculate &amp; Save</button>
+    </div>
+
+    <div class="display-panel" id="fat-display">
+      <div class="result-grid">
+        <div class="result-stat">
+          <div class="result-val" id="d-fat">—</div>
+          <div class="result-lbl">Body Fat %</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-val" id="d-fat-cat" style="font-size:18px;">—</div>
+          <div class="result-lbl">Category</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-val" id="d-fat-lean" style="color:var(--green)">—</div>
+          <div class="result-lbl">Lean Mass (kg)</div>
+        </div>
+      </div>
+
+      <!-- FAT SCALE -->
+      <div class="scale-bar-wrap">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px;">Body Fat Scale (Male)</div>
+        <div class="scale-track" id="fat-scale-bar"
+             style="background:linear-gradient(90deg,#3b82f6 0%,#22c55e 20%,#84cc16 38%,#f59e0b 55%,#ef4444 80%,#7c3aed 100%);">
+          <div class="scale-pointer" id="fat-ptr" style="left:5%"></div>
+        </div>
+        <div class="scale-labels" id="fat-scale-labels">
+          <span>Essential<br>2–5%</span>
+          <span>Athlete<br>6–13%</span>
+          <span>Fitness<br>14–17%</span>
+          <span>Average<br>18–24%</span>
+          <span>Obese<br>&gt;25%</span>
+        </div>
+        <span class="cat-pill" id="fat-pill">—</span>
+      </div>
+      <div class="edit-row" style="margin-top:14px;">
+        <button class="btn-edit" onclick="editSection('fat')">✏️ Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       4. GOAL WEIGHT TRACKER
+  ══════════════════════════════════════ -->
+  <div class="card">
+    <div class="section-title">🎯 Goal Weight Tracker</div>
+    <div class="section-sub">Set your start, current and goal weight — see how far you've come</div>
+
+    <div class="edit-form" id="gw-form">
+      <div class="form-grid3">
+        <div class="fl"><label>Start Weight (kg)</label><input type="number" id="gw-start"   placeholder="e.g. 75" min="20" max="300"></div>
+        <div class="fl"><label>Current Weight (kg)</label><input type="number" id="gw-current" placeholder="e.g. 70" min="20" max="300"></div>
+        <div class="fl"><label>Goal Weight (kg)</label><input type="number" id="gw-goal"    placeholder="e.g. 65" min="20" max="300"></div>
+      </div>
+      <div class="err-msg" id="gw-err">⚠ Please enter valid weight values (min 20 kg).</div>
+      <button class="btn-save" onclick="saveGoalWeight()">📊 Save &amp; Show Progress</button>
+    </div>
+
+    <div class="display-panel" id="gw-display">
+      <div class="result-grid" style="margin-bottom:14px;">
+        <div class="result-stat"><div class="result-val" id="d-gw-lost" style="color:var(--green)">—</div><div class="result-lbl">Lost so far (kg)</div></div>
+        <div class="result-stat"><div class="result-val" id="d-gw-rem"  style="color:var(--amber)">—</div><div class="result-lbl">Remaining (kg)</div></div>
+        <div class="result-stat"><div class="result-val" id="d-gw-pct"  style="color:var(--blue)">—</div><div class="result-lbl">Goal Progress</div></div>
+      </div>
+      <div class="gp-track"><div class="gp-fill" id="d-gw-bar" style="width:0%"></div></div>
+      <div class="gp-labels">
+        <span id="d-gw-lstart">—</span>
+        <span id="d-gw-lmid"   style="color:var(--green);font-weight:500;"></span>
+        <span id="d-gw-lgoal">—</span>
+      </div>
+      <div id="d-gw-msg" style="margin-top:12px;font-size:13px;"></div>
+      <div class="edit-row" style="margin-top:14px;">
+        <button class="btn-edit" onclick="editSection('gw')">✏️ Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       5. WEEKLY GOALS + ACHIEVEMENTS
+  ══════════════════════════════════════ -->
+  <div class="two-col">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-head"><span class="card-head-icon">🎯</span> Weekly Goals</div>
+      <div class="goal-item">
+        <div class="goal-top"><span class="goal-name">🔥 Calories Burned</span><span class="goal-nums">3,200 / 5,000 kcal</span></div>
+        <div class="track"><div class="fill" style="width:64%;background:linear-gradient(90deg,#c0392b,var(--red));"></div></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-top"><span class="goal-name">🚶 Steps</span><span class="goal-nums">42,300 / 70,000</span></div>
+        <div class="track"><div class="fill" style="width:60%;background:linear-gradient(90deg,#0d5fad,var(--blue));"></div></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-top"><span class="goal-name">💧 Hydration</span><span class="goal-nums">38 / 56 glasses</span></div>
+        <div class="track"><div class="fill" style="width:68%;background:linear-gradient(90deg,#0e7490,#06b6d4);"></div></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-top"><span class="goal-name">🏋️ Workouts</span><span class="goal-nums">4 / 5 sessions</span></div>
+        <div class="track"><div class="fill" style="width:80%;background:linear-gradient(90deg,#b45309,var(--amber));"></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-head">
+        <span class="card-head-icon">🏆</span> Achievements
+        <span style="margin-left:auto;font-size:11px;color:var(--blue);font-weight:400;text-transform:none;letter-spacing:0;">3 / 8 unlocked</span>
+      </div>
+      <div class="ach-grid">
+        <div class="ach"><div class="ach-ico">🔥</div><div class="ach-name">On Fire</div><div class="ach-desc">10-day streak</div></div>
+        <div class="ach"><div class="ach-ico">💪</div><div class="ach-name">Iron Will</div><div class="ach-desc">50 workouts</div></div>
+        <div class="ach"><div class="ach-ico">⚖️</div><div class="ach-name">5kg Down</div><div class="ach-desc">Lost first 5kg</div></div>
+        <div class="ach locked"><div class="ach-ico">🏆</div><div class="ach-name">Champion</div><div class="ach-desc">30-day streak</div></div>
+        <div class="ach locked"><div class="ach-ico">🌊</div><div class="ach-name">Hydration King</div><div class="ach-desc">30 days perfect</div></div>
+        <div class="ach locked"><div class="ach-ico">🎯</div><div class="ach-name">Goal Crusher</div><div class="ach-desc">All goals in a week</div></div>
+        <div class="ach locked"><div class="ach-ico">🚀</div><div class="ach-name">Speed Demon</div><div class="ach-desc">10k steps x5</div></div>
+        <div class="ach locked"><div class="ach-ico">🥗</div><div class="ach-name">Clean Eater</div><div class="ach-desc">Log meals 14 days</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.wrap -->
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h3>KEEP PUSHING — YOUR BEST IS YET TO COME</h3>
+  <p>Stay consistent and you will hit every goal you set for yourself.</p>
+ <a href="main.html"> <button class="btn-todash">&#8592; Back to Dashboard</button></a>
+</div>
+
+<script>
+/* ── helpers ── */
+function show(id)  { document.getElementById(id).classList.add('show'); }
+function hide(id)  { document.getElementById(id).classList.remove('show'); }
+function showEl(id){ document.getElementById(id).style.display = ''; }
+function hideEl(id){ document.getElementById(id).style.display = 'none'; }
+function showDisplay(id){ document.getElementById(id).classList.add('show'); }
+function hideDisplay(id){ document.getElementById(id).classList.remove('show'); }
+function editSection(sec) {
+  document.getElementById(sec+'-form').classList.remove('hidden');
+  hideDisplay(sec+'-display');
+}
+
+/* 1. PERSONAL INFO*/
+function savePersonalInfo() {
+  const name     = document.getElementById('pi-name').value.trim();
+  const handle   = document.getElementById('pi-handle').value.trim();
+  const age      = document.getElementById('pi-age').value.trim();
+  const gender   = document.getElementById('pi-gender').value;
+  const location = document.getElementById('pi-location').value.trim();
+  const fitgoal  = document.getElementById('pi-goal').value;
+  const activity = document.getElementById('pi-activity').value;
+
+  const err = document.getElementById('pi-err');
+  if (!name) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('d-avatar').textContent  = initials;
+  document.getElementById('d-name').textContent    = name.toUpperCase();
+  document.getElementById('d-sub').textContent     = (handle||'') + (location ? ' · '+location : '') + ' · Member since Jan 2025';
+  document.getElementById('d-age').textContent     = age      ? age+' years' : '—';
+  document.getElementById('d-gender').textContent  = gender   || '—';
+  document.getElementById('d-location').textContent= location || '—';
+  document.getElementById('d-fitgoal').textContent = fitgoal  || '—';
+  document.getElementById('d-activity').textContent= activity || '—';
+  document.getElementById('d-goal-badge').textContent    = fitgoal  ? '🎯 '+fitgoal : '🎯 —';
+  document.getElementById('d-activity-badge').textContent= activity ? '⚡ '+activity.split(' ')[0] : '⚡ —';
+
+  document.getElementById('pi-form').classList.add('hidden');
+  showDisplay('pi-display');
+}
+function editPersonalInfo() {
+  document.getElementById('pi-form').classList.remove('hidden');
+  hideDisplay('pi-display');
+}
+
+/* 2. BMI  (standard formula: weight / height_m²) */
+function saveBMI() {
+  const h = parseFloat(document.getElementById('bmi-h').value);
+  const w = parseFloat(document.getElementById('bmi-w').value);
+  const err = document.getElementById('bmi-err');
+
+  if (!h || !w || h < 50 || h > 250 || w < 10 || w > 400) {
+    err.classList.add('show'); hideDisplay('bmi-display'); return;
+  }
+  err.classList.remove('show');
+
+  const hm  = h / 100;
+  const bmi = w / (hm * hm);
+  const idealLow  = (18.5 * hm * hm).toFixed(1);
+  const idealHigh = (24.9 * hm * hm).toFixed(1);
+
+  let cat, colour, pillBg;
+  if      (bmi < 18.5) { cat='Underweight';    colour='#3b82f6'; pillBg='rgba(59,130,246,0.15)'; }
+  else if (bmi < 25)   { cat='Normal Weight';  colour='#22c55e'; pillBg='rgba(34,197,94,0.15)'; }
+  else if (bmi < 30)   { cat='Overweight';     colour='#f59e0b'; pillBg='rgba(245,158,11,0.15)'; }
+  else if (bmi < 35)   { cat='Obese';          colour='#ef4444'; pillBg='rgba(239,68,68,0.15)'; }
+  else                  { cat='Severely Obese'; colour='#7c3aed'; pillBg='rgba(124,58,237,0.15)'; }
+
+  document.getElementById('d-bmi').textContent     = bmi.toFixed(1);
+  document.getElementById('d-bmi').style.color     = colour;
+  document.getElementById('d-bmi-cat').textContent = cat;
+  document.getElementById('d-bmi-cat').style.color = colour;
+  document.getElementById('d-bmi-ideal').textContent = idealLow+'–'+idealHigh;
+
+  const pill = document.getElementById('bmi-pill');
+  pill.textContent = cat; pill.style.color = colour;
+  pill.style.background = pillBg; pill.style.border = '1px solid '+colour+'55';
+
+  // pointer: BMI 10–40 → 0–100%
+  const pct = Math.min(Math.max((bmi - 10) / 30 * 100, 2), 98);
+  document.getElementById('bmi-ptr').style.left = pct + '%';
+
+  document.getElementById('bmi-form').classList.add('hidden');
+  showDisplay('bmi-display');
+  document.getElementById('bmi-display').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* 3. BODY FAT % */
+function toggleHip() {
+  const isFemale = document.getElementById('fat-gender').value === 'female';
+  document.getElementById('fat-hip').disabled      = !isFemale;
+  document.getElementById('fat-hip-wrap').style.opacity = isFemale ? '1' : '.4';
+}
+
+function saveFat() {
+  const gender = document.getElementById('fat-gender').value;
+  const h      = parseFloat(document.getElementById('fat-h').value);
+  const neck   = parseFloat(document.getElementById('fat-neck').value);
+  const waist  = parseFloat(document.getElementById('fat-waist').value);
+  const hip    = parseFloat(document.getElementById('fat-hip').value) || 0;
+  const err    = document.getElementById('fat-err');
+
+  if (!gender || !h || !neck || !waist) { err.classList.add('show'); hideDisplay('fat-display'); return; }
+  if (gender === 'male'   && (waist - neck) <= 0) { err.textContent='⚠ Waist must be greater than neck.'; err.classList.add('show'); return; }
+  if (gender === 'female' && !hip)               { err.textContent='⚠ Hip measurement required for females.'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+
+  let fatPct;
+  if (gender === 'male') {
+    // Men: 86.010 × log10(waist−neck) − 70.041 × log10(height) + 36.76
+    fatPct = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(h) + 36.76;
+  } else {
+    // Women: 163.205 × log10(waist+hip−neck) − 97.684 × log10(height) − 78.387
+    fatPct = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(h) - 78.387;
+  }
+  fatPct = Math.max(2, Math.min(65, fatPct));
+
+  // Lean mass — try to get body weight from BMI or goal-weight fields
+  const bw = parseFloat(document.getElementById('bmi-w').value) ||
+             parseFloat(document.getElementById('gw-current').value);
+  const lean = bw ? (bw * (1 - fatPct / 100)).toFixed(1) + ' kg' : 'Enter weight in BMI section';
+
+  // Categories (American Council on Exercise)
+  let cat, colour, pillBg, scaleMin, scaleMax;
+  if (gender === 'male') {
+    scaleMin = 2; scaleMax = 35;
+    if      (fatPct < 6)  { cat='Essential Fat'; colour='#3b82f6'; pillBg='rgba(59,130,246,0.15)'; }
+    else if (fatPct < 14) { cat='Athlete';        colour='#22c55e'; pillBg='rgba(34,197,94,0.15)'; }
+    else if (fatPct < 18) { cat='Fitness';        colour='#84cc16'; pillBg='rgba(132,204,22,0.15)'; }
+    else if (fatPct < 25) { cat='Average';        colour='#f59e0b'; pillBg='rgba(245,158,11,0.15)'; }
+    else                   { cat='Obese';          colour='#ef4444'; pillBg='rgba(239,68,68,0.15)'; }
+    document.getElementById('fat-scale-labels').innerHTML =
+      '<span>Essential<br>2–5%</span><span>Athlete<br>6–13%</span><span>Fitness<br>14–17%</span><span>Average<br>18–24%</span><span>Obese<br>&gt;25%</span>';
+  } else {
+    scaleMin = 10; scaleMax = 45;
+    if      (fatPct < 14) { cat='Essential Fat'; colour='#3b82f6'; pillBg='rgba(59,130,246,0.15)'; }
+    else if (fatPct < 21) { cat='Athlete';        colour='#22c55e'; pillBg='rgba(34,197,94,0.15)'; }
+    else if (fatPct < 25) { cat='Fitness';        colour='#84cc16'; pillBg='rgba(132,204,22,0.15)'; }
+    else if (fatPct < 32) { cat='Average';        colour='#f59e0b'; pillBg='rgba(245,158,11,0.15)'; }
+    else                   { cat='Obese';          colour='#ef4444'; pillBg='rgba(239,68,68,0.15)'; }
+    document.getElementById('fat-scale-labels').innerHTML =
+      '<span>Essential<br>10–13%</span><span>Athlete<br>14–20%</span><span>Fitness<br>21–24%</span><span>Average<br>25–31%</span><span>Obese<br>&gt;32%</span>';
+  }
+
+  document.getElementById('d-fat').textContent       = fatPct.toFixed(1) + '%';
+  document.getElementById('d-fat').style.color       = colour;
+  document.getElementById('d-fat-cat').textContent   = cat;
+  document.getElementById('d-fat-cat').style.color   = colour;
+  document.getElementById('d-fat-lean').textContent  = lean;
+
+  const pill = document.getElementById('fat-pill');
+  pill.textContent = cat; pill.style.color = colour;
+  pill.style.background = pillBg; pill.style.border = '1px solid '+colour+'55';
+
+  // pointer position on scale
+  const pct = Math.min(Math.max((fatPct - scaleMin) / (scaleMax - scaleMin) * 100, 2), 98);
+  document.getElementById('fat-ptr').style.left = pct + '%';
+
+  document.getElementById('fat-form').classList.add('hidden');
+  showDisplay('fat-display');
+  document.getElementById('fat-display').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* 4. GOAL WEIGHT TRACKER */
+function saveGoalWeight() {
+  const start   = parseFloat(document.getElementById('gw-start').value);
+  const current = parseFloat(document.getElementById('gw-current').value);
+  const goal    = parseFloat(document.getElementById('gw-goal').value);
+  const err     = document.getElementById('gw-err');
+
+  if (!start || !current || !goal || start < 20 || current < 20 || goal < 20) {
+    err.classList.add('show'); hideDisplay('gw-display'); return;
+  }
+  err.classList.remove('show');
+
+  const totalToChange = Math.abs(start - goal);
+  const lost          = Math.max(0, start - current);
+  const remaining     = Math.max(0, current - goal);
+  const pct           = totalToChange > 0 ? Math.min(100, Math.round(lost / totalToChange * 100)) : 100;
+
+  document.getElementById('d-gw-lost').textContent   = lost.toFixed(1) + ' kg';
+  document.getElementById('d-gw-rem').textContent    = remaining > 0 ? remaining.toFixed(1)+' kg' : '✅ Reached!';
+  document.getElementById('d-gw-pct').textContent    = pct + '%';
+  document.getElementById('d-gw-bar').style.width    = pct + '%';
+  document.getElementById('d-gw-lstart').textContent = start + ' kg';
+  document.getElementById('d-gw-lgoal').textContent  = goal  + ' kg';
+  document.getElementById('d-gw-lmid').textContent   = pct + '% done';
+
+  let msg = '';
+  if (current <= goal)    msg = '<span style="color:var(--green);font-weight:600;">🎉 Congratulations! You\'ve hit your goal weight!</span>';
+  else if (pct >= 75)     msg = '<span style="color:var(--green);">🔥 Over 75% there — incredible progress!</span>';
+  else if (pct >= 50)     msg = '<span style="color:var(--blue);">💪 Halfway there — keep going!</span>';
+  else if (pct >= 25)     msg = '<span style="color:var(--amber);">🚀 Great start! Stay consistent.</span>';
+  else                    msg = '<span style="color:var(--muted);">Every journey starts with one step. You\'ve got this! 💪</span>';
+  document.getElementById('d-gw-msg').innerHTML = msg;
+
+  document.getElementById('gw-form').classList.add('hidden');
+  showDisplay('gw-display');
+  document.getElementById('gw-display').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+//logout
+    function logout(){
+sessionStorage.removeItem("loggedIn");
+window.location.href="login.html";
+}
+
+</script>
+
+</body>
+</html>

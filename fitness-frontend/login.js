@@ -6,45 +6,32 @@ signUpBtn.addEventListener('click', () => container.classList.add("right-panel-a
 signInBtn.addEventListener('click', () => container.classList.remove("right-panel-active"));
 
 
-//login
+// LOGIN
 document.getElementById("loginForm").addEventListener("submit", function(e){
 
 e.preventDefault();
 
-const email = document.getElementById("username").value;
-const password = document.getElementById("password").value;
+const user = document.getElementById("username").value;
+const pass = document.getElementById("password").value;
 
-fetch("http://localhost:5000/api/auth/login",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-email:email,
-password:password
-})
-})
-.then(res=>res.json())
-.then(data=>{
+const savedUser = localStorage.getItem("userName");
+const savedPass = localStorage.getItem("userPass");
 
-if(data.userId){
+if(user === savedUser && pass === savedPass){
 
 sessionStorage.setItem("loggedIn","true");
-localStorage.setItem("userId",data.userId);
-localStorage.setItem("userName",data.name);
+localStorage.setItem("userName", savedUser);
 
 window.location.href="main.html";
 
 }else{
-alert(data.error);
+alert("Invalid login");
 }
 
 });
 
-});
 
-
-// SIignup
+// SIGNUP
 document.querySelector(".sign-up-container form").addEventListener("submit", function(e){
 
 e.preventDefault();
@@ -58,27 +45,12 @@ alert("Please fill all fields");
 return;
 }
 
-fetch("http://localhost:5000/api/auth/signup",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-name:name,
-email:email,
-password:pass
-})
-})
-.then(res=>res.json())
-.then(data=>{
+localStorage.setItem("userName", name);
+localStorage.setItem("userEmail", email);
+localStorage.setItem("userPass", pass);
 
-if(data.message){
-alert("Signup successful");
-window.location.href="login.html";
-}else{
-alert(data.error);
-}
+alert("Signup successful! Please login.");
 
-});
+container.classList.remove("right-panel-active");
 
 });
