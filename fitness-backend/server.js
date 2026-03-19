@@ -21,6 +21,7 @@ app.use("/api/workout", require("./routes/workout"));
 app.use("/api/calories", require("./routes/calories"));
 app.use("/api/contact", require("./routes/contact"));
 app.use("/api/progress", require("./routes/progress"));
+app.use("/api/daily-progress", require("./routes/dailyprogress"));
 
 /* ----------- TEST ROUTE ----------- */
 app.get("/", (req, res) => {
