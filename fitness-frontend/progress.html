@@ -15,23 +15,18 @@
     }
     body { background:var(--bg); color:var(--text); font-family:var(--body); padding-bottom:0; }
 
-    /* HERO IMAGE */
     .hero-banner { position:relative; width:100%; height:230px; overflow:hidden; }
     .hero-banner img { width:100%; height:100%; object-fit:cover; object-position:center 35%; filter:brightness(0.4); display:block; }
     .hero-banner-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 40%,rgba(13,17,23,0.85) 100%); }
     .hero-banner-text { position:absolute; bottom:28px; left:32px; right:32px; }
     .hero-banner-text h2 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; line-height:1.3; text-shadow:0 2px 12px rgba(0,0,0,0.6); }
 
-    /* TOP BUTTON BAR */
     .top-btn-bar { display:flex; justify-content:space-between; align-items:center; padding:12px 32px; background:var(--surface); border-bottom:1px solid var(--border); }
     .btn-back { background:var(--blue); color:#fff; border:none; border-radius:30px; padding:8px 22px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
     .btn-back:hover { background:#3399ff; transform:translateY(-1px); }
- 
 
-    /* WRAP */
     .wrap { max-width:900px; margin:0 auto; padding:28px 20px 0; }
 
-    /* GREEN HERO CARD */
     .prog-hero { background:linear-gradient(135deg,#071a10 0%,#0a2818 50%,#061510 100%); border:1px solid rgba(34,197,94,0.15); border-radius:18px; margin-bottom:22px; padding:28px 32px; position:relative; overflow:hidden; }
     .prog-hero::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(34,197,94,0.1) 0%,transparent 70%); }
     .prog-hero::after  { content:''; position:absolute; bottom:-60px; left:50px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(26,140,255,0.06) 0%,transparent 70%); }
@@ -47,26 +42,22 @@
     .big-pct { font-family:var(--head); font-size:64px; letter-spacing:2px; color:var(--green); line-height:1; }
     .big-sub { font-size:12px; color:var(--muted); }
 
-    /* STATS */
     .stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
     .scard     { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
     .scard-ico { font-size:18px; margin-bottom:6px; }
     .scard-val { font-family:var(--head); font-size:24px; letter-spacing:1px; line-height:1; margin-bottom:3px; }
     .scard-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
 
-    /* PERIOD TABS */
     .ptabs { display:flex; gap:3px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:3px; }
     .ptab  { padding:4px 13px; border-radius:6px; font-size:11px; font-weight:500; cursor:pointer; color:var(--muted); border:none; background:none; font-family:var(--body); transition:all .15s; }
     .ptab.active { background:var(--blue); color:#fff; }
 
-    /* CARDS */
     .card    { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
     .card-h  { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
     .card-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
     .grid2   { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
     .mb16    { margin-bottom:16px; }
 
-    /* WEIGHT GOAL */
     .goal-mega  { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:16px; }
     .goal-meta  { display:flex; gap:28px; margin:12px 0 14px; flex-wrap:wrap; }
     .gm-item    { display:flex; flex-direction:column; gap:3px; }
@@ -77,10 +68,8 @@
     .track-dot  { position:absolute; right:-1px; top:50%; transform:translateY(-50%); width:20px; height:20px; background:#fff; border-radius:50%; border:3px solid var(--green); }
     .track-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
 
-    /* CHART */
     .cwrap { position:relative; width:100%; }
 
-    /* WEIGHT LOG */
     .wlog-row   { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid rgba(42,52,68,0.5); }
     .wlog-row:last-child { border-bottom:none; }
     .wlog-date  { font-size:12px; color:var(--muted); width:80px; }
@@ -91,21 +80,18 @@
     .wdown { background:rgba(34,197,94,0.1); color:var(--green); }
     .wup   { background:rgba(239,68,68,0.1);  color:var(--red); }
 
-    /* TABLE */
     .ptable { width:100%; border-collapse:collapse; font-size:12px; }
     .ptable th { padding:9px 12px; text-align:left; color:var(--muted); font-weight:500; font-size:10px; text-transform:uppercase; letter-spacing:.6px; border-bottom:1px solid var(--border); }
     .ptable td { padding:9px 12px; border-bottom:1px solid rgba(42,52,68,0.4); }
     .ptable tr:last-child td { border-bottom:none; }
     .ptable tr:nth-child(even) td { background:rgba(30,38,50,0.3); }
 
-    /* STREAK */
     .streak-days { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
     .sday { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; }
     .sday.done  { background:rgba(34,197,94,0.2); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
     .sday.today { background:var(--green); color:#fff; }
     .sday.miss  { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
 
-    /* FOOTER CTA */
     .footer-cta { background:var(--blue); text-align:center; padding:52px 20px; margin-top:40px; }
     .footer-cta h3 { font-family:var(--head); font-size:26px; letter-spacing:2px; color:#fff; margin-bottom:10px; }
     .footer-cta p  { font-size:13px; color:rgba(255,255,255,0.75); margin-bottom:24px; }
@@ -115,7 +101,6 @@
 </head>
 <body>
 
-  <!-- HERO IMAGE BANNER -->
   <div class="hero-banner">
     <img
       src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80"
@@ -128,93 +113,79 @@
     </div>
   </div>
 
-  <!-- BACK + LOGOUT BUTTONS -->
   <div class="top-btn-bar">
-<a href="main.html"><button class="btn-back">&#8592; Back to Dashboard</button></a>
+    <a href="main.html"><button class="btn-back">&#8592; Back to Dashboard</button></a>
     <button class="btn-back" onclick="logout()">Logout</button>
   </div>
 
   <div class="wrap">
 
-    <!-- GREEN HERO CARD -->
     <div class="prog-hero">
       <div class="hero-z">
         <div class="hero-left">
           <h1>TRACK YOUR JOURNEY</h1>
-          <p>78 days of data · Tracking since January 2025</p>
+          <p id="heroSubtext">Loading your progress...</p>
           <div class="hero-pills">
-            <span class="pill p-green">✅ On Track</span>
-            <span class="pill p-blue">📊 78 Days Logged</span>
-            <span class="pill p-amber">🔥 12-Day Streak</span>
+            <span class="pill p-green" id="pillStatus">✅ On Track</span>
+            <span class="pill p-blue" id="pillDays">📊 0 Days Logged</span>
+            <span class="pill p-amber" id="pillStreak">🔥 0-Day Streak</span>
           </div>
         </div>
         <div class="hero-right">
-          <div class="big-pct">50%</div>
+          <div class="big-pct" id="goalPercent">0%</div>
           <div class="big-sub">Weight goal reached</div>
         </div>
       </div>
     </div>
 
-    <!-- QUICK STATS -->
     <div class="stats-row">
-      <div class="scard"><div class="scard-ico">🔥</div><div class="scard-val" style="color:var(--red)">736</div><div class="scard-lbl">Cal Today</div></div>
-      <div class="scard"><div class="scard-ico">🚶</div><div class="scard-val" style="color:var(--blue)">7,420</div><div class="scard-lbl">Steps Today</div></div>
-      <div class="scard"><div class="scard-ico">💧</div><div class="scard-val" style="color:#06b6d4">5/8</div><div class="scard-lbl">Glasses</div></div>
-      <div class="scard"><div class="scard-ico">⚖️</div><div class="scard-val" style="color:var(--green)">70kg</div><div class="scard-lbl">Weight</div></div>
-      <div class="scard"><div class="scard-ico">💪</div><div class="scard-val" style="color:var(--amber)">48</div><div class="scard-lbl">Workouts</div></div>
+      <div class="scard"><div class="scard-ico">🔥</div><div class="scard-val" id="statCalories" style="color:var(--red)">0</div><div class="scard-lbl">Cal Today</div></div>
+      <div class="scard"><div class="scard-ico">🚶</div><div class="scard-val" id="statSteps" style="color:var(--blue)">0</div><div class="scard-lbl">Steps Today</div></div>
+      <div class="scard"><div class="scard-ico">💧</div><div class="scard-val" id="statWater" style="color:#06b6d4">0/8</div><div class="scard-lbl">Glasses</div></div>
+      <div class="scard"><div class="scard-ico">⚖️</div><div class="scard-val" id="statWeight" style="color:var(--green)">--</div><div class="scard-lbl">Weight</div></div>
+      <div class="scard"><div class="scard-ico">💪</div><div class="scard-val" id="statWorkouts" style="color:var(--amber)">0</div><div class="scard-lbl">Workouts</div></div>
     </div>
 
-    <!-- WEIGHT GOAL -->
     <div class="goal-mega">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div>
           <div class="card-title">⚖️ Weight Loss Goal</div>
           <div class="goal-meta">
-            <div class="gm-item"><div class="gm-lbl">Start</div><div class="gm-val">75 kg</div></div>
-            <div class="gm-item"><div class="gm-lbl">Current</div><div class="gm-val" style="color:var(--blue)">70 kg</div></div>
-            <div class="gm-item"><div class="gm-lbl">Goal</div><div class="gm-val" style="color:var(--green)">65 kg</div></div>
-            <div class="gm-item"><div class="gm-lbl">Lost</div><div class="gm-val" style="color:var(--green)">5 kg 🎉</div></div>
-            <div class="gm-item"><div class="gm-lbl">Remaining</div><div class="gm-val" style="color:var(--amber)">5 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Start</div><div class="gm-val" id="startWeight">75 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Current</div><div class="gm-val" id="currentWeight" style="color:var(--blue)">--</div></div>
+            <div class="gm-item"><div class="gm-lbl">Goal</div><div class="gm-val" id="goalWeight" style="color:var(--green)">65 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Lost</div><div class="gm-val" id="lostWeight" style="color:var(--green)">0 kg</div></div>
+            <div class="gm-item"><div class="gm-lbl">Remaining</div><div class="gm-val" id="remainingWeight" style="color:var(--amber)">0 kg</div></div>
           </div>
         </div>
         <div style="text-align:right;">
-          <div style="font-family:var(--head);font-size:42px;color:var(--green);line-height:1;">50%</div>
+          <div style="font-family:var(--head);font-size:42px;color:var(--green);line-height:1;" id="goalPercentMini">0%</div>
           <div style="font-size:11px;color:var(--muted);">completed</div>
         </div>
       </div>
-      <div class="big-track"><div class="big-fill" style="width:50%"><div class="track-dot"></div></div></div>
+      <div class="big-track"><div class="big-fill" id="goalFill" style="width:0%"><div class="track-dot"></div></div></div>
       <div class="track-labels">
-        <span>75 kg (start)</span>
-        <span style="color:var(--green);font-weight:500;">Halfway there!</span>
-        <span>65 kg (goal)</span>
+        <span id="trackStartLabel">75 kg (start)</span>
+        <span style="color:var(--green);font-weight:500;" id="trackMiddleLabel">Getting started!</span>
+        <span id="trackGoalLabel">65 kg (goal)</span>
       </div>
     </div>
 
-    <!-- CHARTS: Calories + Steps -->
     <div class="grid2 mb16">
       <div class="card">
         <div class="card-h">
           <div class="card-title">🔥 Calories Burned</div>
-          <div class="ptabs">
-            <button class="ptab active" onclick="switchTab(this,'cal','week')">Week</button>
-            <button class="ptab" onclick="switchTab(this,'cal','month')">Month</button>
-          </div>
         </div>
         <div class="cwrap" style="height:180px;"><canvas id="calChart"></canvas></div>
       </div>
       <div class="card">
         <div class="card-h">
           <div class="card-title">🚶 Daily Steps</div>
-          <div class="ptabs">
-            <button class="ptab active" onclick="switchTab(this,'steps','week')">Week</button>
-            <button class="ptab" onclick="switchTab(this,'steps','month')">Month</button>
-          </div>
         </div>
         <div class="cwrap" style="height:180px;"><canvas id="stepsChart"></canvas></div>
       </div>
     </div>
 
-    <!-- CHARTS: Weight Trend + Log -->
     <div class="grid2 mb16">
       <div class="card">
         <div class="card-h"><div class="card-title">📉 Weight Trend</div></div>
@@ -226,10 +197,9 @@
       </div>
     </div>
 
-    <!-- CHARTS: Workout Mix + Water -->
     <div class="grid2 mb16">
       <div class="card">
-        <div class="card-h"><div class="card-title">🏋️ Workout Mix (This Month)</div></div>
+        <div class="card-h"><div class="card-title">🏋️ Workout Mix</div></div>
         <div style="display:flex;align-items:center;gap:20px;">
           <div class="cwrap" style="height:160px;width:160px;flex-shrink:0;"><canvas id="donutChart"></canvas></div>
           <div id="donut-legend" style="display:flex;flex-direction:column;gap:8px;font-size:12px;"></div>
@@ -241,15 +211,13 @@
       </div>
     </div>
 
-    <!-- STREAK -->
     <div class="card mb16">
-      <div class="card-h"><div class="card-title">🔥 Current Streak — March</div></div>
-      <div style="font-family:var(--head);font-size:42px;color:var(--amber);letter-spacing:1px;margin:8px 0 4px;">12 Days</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Personal best: 18 days</div>
+      <div class="card-h"><div class="card-title">🔥 Current Streak</div></div>
+      <div style="font-family:var(--head);font-size:42px;color:var(--amber);letter-spacing:1px;margin:8px 0 4px;" id="currentStreakText">0 Days</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;" id="bestStreakText">Personal best: 0 days</div>
       <div class="streak-days" id="streak-days"></div>
     </div>
 
-    <!-- DAILY LOG TABLE -->
     <div class="card">
       <div class="card-h">
         <div class="card-title">📋 Daily Progress Log</div>
@@ -263,130 +231,422 @@
       </table>
     </div>
 
-  </div><!-- /.wrap -->
+  </div>
 
-  <!-- FOOTER CTA -->
   <div class="footer-cta">
     <h3>STAY CONSISTENT AND ACHIEVE YOUR FITNESS GOALS</h3>
-    <p>Every workout counts. Keep pushing — you're halfway there!</p>
+    <p>Every workout counts. Keep pushing and keep tracking.</p>
     <a href="main.html"><button class="btn-todash">&#8592; Back to Dashboard</button></a>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script>
-    const C = { blue:'#1a8cff', green:'#22c55e', amber:'#f59e0b', red:'#ef4444', cyan:'#06b6d4', muted:'#8a9ab5', grid:'rgba(255,255,255,0.05)' };
+    const API_BASE = "http://localhost:5000/api";
+    const userId = localStorage.getItem("userId");
 
-    const wkLabels   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    const calWeek    = [580,820,740,910,736,620,0];
-    const calMonth   = [580,820,740,910,736,620,490,560,600,520,740,820,680,710,560,600,530,740,910,736,480,610,720,540,670,590,750,800,0,0];
-    const stepsWeek  = [6800,9100,8200,10200,7420,8800,0];
-    const stepsMonth = calMonth.map(v => v ? Math.round(v * 11) : 0);
+    const C = {
+      blue:'#1a8cff',
+      green:'#22c55e',
+      amber:'#f59e0b',
+      red:'#ef4444',
+      cyan:'#06b6d4',
+      muted:'#8a9ab5',
+      grid:'rgba(255,255,255,0.05)'
+    };
 
-    const mOpts = () => ({
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false} },
-      scales:{
-        x:{ grid:{color:C.grid}, ticks:{color:C.muted,font:{size:10}} },
-        y:{ grid:{color:C.grid}, ticks:{color:C.muted,font:{size:10}} }
+    let calChart, stepsChart, weightChart, donutChart, waterChart;
+
+    const START_WEIGHT = 75;
+    const GOAL_WEIGHT = 65;
+
+    function logout() {
+      sessionStorage.removeItem("loggedIn");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("userName");
+      window.location.href = "login.html";
+    }
+
+    function todayISO() {
+      return new Date().toISOString().split("T")[0];
+    }
+
+    function formatShortDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    }
+
+    function getLastNDays(n) {
+      const days = [];
+      for (let i = n - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const iso = d.toISOString().split("T")[0];
+        const label = d.toLocaleDateString("en-US", { weekday: "short" });
+        days.push({ iso, label });
       }
-    });
-
-    const calChart = new Chart(document.getElementById('calChart'),{
-      type:'bar',
-      data:{ labels:wkLabels, datasets:[{data:calWeek, backgroundColor:'rgba(239,68,68,0.7)', borderRadius:5, borderSkipped:false}] },
-      options:mOpts()
-    });
-
-    const stepsChart = new Chart(document.getElementById('stepsChart'),{
-      type:'bar',
-      data:{ labels:wkLabels, datasets:[{data:stepsWeek, backgroundColor:'rgba(26,140,255,0.7)', borderRadius:5, borderSkipped:false}] },
-      options:mOpts()
-    });
-
-    new Chart(document.getElementById('weightChart'),{
-      type:'line',
-      data:{
-        labels:['Jan 1','Jan 15','Feb 1','Feb 15','Mar 1','Mar 7','Mar 14','Mar 17','Today'],
-        datasets:[{ data:[75,74.5,73.8,73,72,71.5,70.9,70.5,70], borderColor:C.green, backgroundColor:'rgba(34,197,94,0.07)', borderWidth:2, pointBackgroundColor:C.green, pointRadius:4, tension:0.4, fill:true }]
-      },
-      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:9},maxRotation:30}}, y:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}},min:64,max:77} } }
-    });
-
-    const donutData = [
-      {label:'Strength',val:12,color:'#1a8cff'},
-      {label:'Cardio',  val:8, color:'#ef4444'},
-      {label:'Running', val:6, color:'#22c55e'},
-      {label:'Cycling', val:4, color:'#f59e0b'}
-    ];
-    new Chart(document.getElementById('donutChart'),{
-      type:'doughnut',
-      data:{ labels:donutData.map(d=>d.label), datasets:[{data:donutData.map(d=>d.val), backgroundColor:donutData.map(d=>d.color), borderWidth:0, hoverOffset:6}] },
-      options:{ responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{display:false}} }
-    });
-    const leg = document.getElementById('donut-legend');
-    donutData.forEach(d => {
-      leg.innerHTML += `<div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0;"></div><span style="color:var(--muted);">${d.label}</span><span style="margin-left:auto;font-weight:500;">${d.val}</span></div>`;
-    });
-
-    new Chart(document.getElementById('waterChart'),{
-      type:'bar',
-      data:{ labels:wkLabels, datasets:[{data:[6,8,7,8,5,7,0],backgroundColor:'rgba(6,182,212,0.7)',borderRadius:5,borderSkipped:false},{data:[8,8,8,8,8,8,8],backgroundColor:'rgba(6,182,212,0.1)',borderRadius:5,borderSkipped:false}] },
-      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}}}, y:{grid:{color:C.grid},ticks:{color:C.muted,font:{size:10}},max:10} } }
-    });
-
-    // Weight log
-    const wlogData = [
-      {date:'Today',     w:'70.0', chg:'▼ -0.5', down:true,  pct:50},
-      {date:'Yesterday', w:'70.5', chg:'▼ -0.2', down:true,  pct:45},
-      {date:'Mar 16',    w:'70.7', chg:'▼ -0.3', down:true,  pct:43},
-      {date:'Mar 15',    w:'71.0', chg:'▲ +0.1', down:false, pct:40},
-      {date:'Mar 14',    w:'70.9', chg:'▼ -0.5', down:true,  pct:41},
-      {date:'Mar 13',    w:'71.4', chg:'▼ -0.1', down:true,  pct:36},
-    ];
-    const wlogEl = document.getElementById('wlog');
-    wlogData.forEach(r => {
-      wlogEl.innerHTML += `<div class="wlog-row"><span class="wlog-date">${r.date}</span><span class="wlog-w">${r.w} kg</span><div class="wlog-bar"><div class="wlog-bfill" style="width:${r.pct}%"></div></div><span class="wchg ${r.down?'wdown':'wup'}">${r.chg}</span></div>`;
-    });
-
-    // Streak
-    const sd = document.getElementById('streak-days');
-    for (let i = 1; i <= 18; i++) {
-      const cls = i < 12 ? 'done' : i === 12 ? 'today' : 'miss';
-      sd.innerHTML += `<div class="sday ${cls}">${i}</div>`;
+      return days;
     }
 
-    // Daily table
-    const rows = [
-      {date:'Mar 18',wo:'Strength',cal:736, steps:'7,420', water:'5/8',wt:'70.0',ok:true},
-      {date:'Mar 17',wo:'Running', cal:820, steps:'9,100', water:'8/8',wt:'70.5',ok:true},
-      {date:'Mar 16',wo:'Cycling', cal:650, steps:'6,800', water:'6/8',wt:'70.7',ok:true},
-      {date:'Mar 15',wo:'Rest',    cal:340, steps:'3,200', water:'7/8',wt:'71.0',ok:false},
-      {date:'Mar 14',wo:'Strength',cal:740, steps:'8,200', water:'5/8',wt:'70.9',ok:true},
-      {date:'Mar 13',wo:'Cardio',  cal:910, steps:'10,200',water:'8/8',wt:'71.4',ok:true},
-      {date:'Mar 12',wo:'Running', cal:760, steps:'8,800', water:'7/8',wt:'71.5',ok:true},
-    ];
-    const tb = document.getElementById('daily-table');
-    rows.forEach(r => {
-      tb.innerHTML += `<tr><td style="color:var(--muted);">${r.date}</td><td>${r.wo}</td><td style="color:var(--red);font-weight:500;">${r.cal} kcal</td><td style="color:var(--blue);">${r.steps}</td><td>💧 ${r.water}</td><td style="font-weight:500;">${r.wt} kg</td><td><span class="wchg ${r.ok?'wdown':'wup'}">${r.ok?'✓ Good':'— Rest'}</span></td></tr>`;
-    });
-
-    // Period switcher
-    const calDataMap   = { week:{labels:wkLabels,data:calWeek},   month:{labels:Array.from({length:30},(_,i)=>String(i+1)),data:calMonth}   };
-    const stepsDataMap = { week:{labels:wkLabels,data:stepsWeek}, month:{labels:Array.from({length:30},(_,i)=>String(i+1)),data:stepsMonth} };
-    function switchTab(btn, type, period) {
-      btn.closest('.ptabs').querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const chart = type === 'cal' ? calChart : stepsChart;
-      const d     = type === 'cal' ? calDataMap[period] : stepsDataMap[period];
-      chart.data.labels = d.labels;
-      chart.data.datasets[0].data = d.data;
-      chart.update();
+    function buildChartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } } },
+          y: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } } }
+        }
+      };
     }
-//logout
-    function logout(){
-sessionStorage.removeItem("loggedIn");
-window.location.href="login.html";
-}
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    function updateTopStats(summary, todayProgress) {
+      const today = todayISO();
+
+      const caloriesToday = (summary.workouts || [])
+        .filter(w => w.date && new Date(w.date).toISOString().split("T")[0] === today)
+        .reduce((sum, w) => sum + (w.calories || 0), 0);
+
+      document.getElementById("statCalories").innerText = caloriesToday;
+      document.getElementById("statSteps").innerText = todayProgress.steps || 0;
+      document.getElementById("statWater").innerText = `${todayProgress.water || 0}/8`;
+      document.getElementById("statWorkouts").innerText = summary.totalWorkouts || 0;
+      document.getElementById("statWeight").innerText = summary.latestWeight ? `${summary.latestWeight} kg` : "--";
+    }
+
+    function updateHero(summary, dailyHistory) {
+      const totalDaysLogged = dailyHistory.length || 0;
+      const currentStreak = summary.currentStreak || 0;
+
+      document.getElementById("heroSubtext").innerText = `${totalDaysLogged} days of data logged`;
+      document.getElementById("pillDays").innerText = `📊 ${totalDaysLogged} Days Logged`;
+      document.getElementById("pillStreak").innerText = `🔥 ${currentStreak}-Day Streak`;
+      document.getElementById("pillStatus").innerText = currentStreak >= 3 ? "✅ On Track" : "⚠️ Keep Going";
+      document.getElementById("currentStreakText").innerText = `${currentStreak} Days`;
+      document.getElementById("bestStreakText").innerText = `Personal best: ${summary.bestStreak || 0} days`;
+    }
+
+    function updateWeightGoal(summary) {
+      const currentWeight = summary.latestWeight || START_WEIGHT;
+      const totalToLose = START_WEIGHT - GOAL_WEIGHT;
+      const lost = START_WEIGHT - currentWeight;
+      const remaining = Math.max(currentWeight - GOAL_WEIGHT, 0);
+      const percent = Math.max(0, Math.min((lost / totalToLose) * 100, 100));
+
+      document.getElementById("startWeight").innerText = `${START_WEIGHT} kg`;
+      document.getElementById("currentWeight").innerText = `${currentWeight} kg`;
+      document.getElementById("goalWeight").innerText = `${GOAL_WEIGHT} kg`;
+      document.getElementById("lostWeight").innerText = `${lost.toFixed(1)} kg`;
+      document.getElementById("remainingWeight").innerText = `${remaining.toFixed(1)} kg`;
+      document.getElementById("goalPercent").innerText = `${Math.round(percent)}%`;
+      document.getElementById("goalPercentMini").innerText = `${Math.round(percent)}%`;
+      document.getElementById("goalFill").style.width = `${percent}%`;
+      document.getElementById("trackStartLabel").innerText = `${START_WEIGHT} kg (start)`;
+      document.getElementById("trackGoalLabel").innerText = `${GOAL_WEIGHT} kg (goal)`;
+
+      let midText = "Getting started!";
+      if (percent >= 75) midText = "Almost there!";
+      else if (percent >= 50) midText = "Halfway there!";
+      else if (percent >= 25) midText = "Making progress!";
+      document.getElementById("trackMiddleLabel").innerText = midText;
+    }
+
+    function renderCaloriesChart(summary) {
+      const last7 = getLastNDays(7);
+
+      const data = last7.map(day => {
+        return (summary.workouts || [])
+          .filter(w => w.date && new Date(w.date).toISOString().split("T")[0] === day.iso)
+          .reduce((sum, w) => sum + (w.calories || 0), 0);
+      });
+
+      calChart = new Chart(document.getElementById("calChart"), {
+        type: "bar",
+        data: {
+          labels: last7.map(d => d.label),
+          datasets: [{
+            data,
+            backgroundColor: "rgba(239,68,68,0.7)",
+            borderRadius: 5,
+            borderSkipped: false
+          }]
+        },
+        options: buildChartOptions()
+      });
+    }
+
+    function renderStepsChart(dailyHistory) {
+      const last7 = getLastNDays(7);
+
+      const data = last7.map(day => {
+        const found = dailyHistory.find(item => item.date === day.iso);
+        return found ? (found.steps || 0) : 0;
+      });
+
+      stepsChart = new Chart(document.getElementById("stepsChart"), {
+        type: "bar",
+        data: {
+          labels: last7.map(d => d.label),
+          datasets: [{
+            data,
+            backgroundColor: "rgba(26,140,255,0.7)",
+            borderRadius: 5,
+            borderSkipped: false
+          }]
+        },
+        options: buildChartOptions()
+      });
+    }
+
+    function renderWaterChart(dailyHistory) {
+      const last7 = getLastNDays(7);
+
+      const waterData = last7.map(day => {
+        const found = dailyHistory.find(item => item.date === day.iso);
+        return found ? (found.water || 0) : 0;
+      });
+
+      waterChart = new Chart(document.getElementById("waterChart"), {
+        type: "bar",
+        data: {
+          labels: last7.map(d => d.label),
+          datasets: [
+            {
+              data: waterData,
+              backgroundColor: "rgba(6,182,212,0.7)",
+              borderRadius: 5,
+              borderSkipped: false
+            },
+            {
+              data: [8,8,8,8,8,8,8],
+              backgroundColor: "rgba(6,182,212,0.1)",
+              borderRadius: 5,
+              borderSkipped: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } } },
+            y: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } }, max: 10 }
+          }
+        }
+      });
+    }
+
+    function renderWeightChart(weightHistory) {
+      const labels = weightHistory.map(item => formatShortDate(item.date));
+      const data = weightHistory.map(item => item.weight);
+
+      weightChart = new Chart(document.getElementById("weightChart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            data,
+            borderColor: C.green,
+            backgroundColor: "rgba(34,197,94,0.07)",
+            borderWidth: 2,
+            pointBackgroundColor: C.green,
+            pointRadius: 4,
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 9 }, maxRotation: 30 } },
+            y: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } } }
+          }
+        }
+      });
+    }
+
+    function renderWeightLog(weightHistory) {
+      const wlogEl = document.getElementById("wlog");
+      wlogEl.innerHTML = "";
+
+      if (!weightHistory.length) {
+        wlogEl.innerHTML = `<div style="color:var(--muted);font-size:12px;">No weight history available.</div>`;
+        return;
+      }
+
+      const minWeight = Math.min(...weightHistory.map(item => item.weight));
+      const maxWeight = Math.max(...weightHistory.map(item => item.weight));
+      const range = Math.max(maxWeight - minWeight, 1);
+
+      const latestFirst = [...weightHistory].reverse().slice(0, 6);
+
+      latestFirst.forEach((item, index) => {
+        const prev = latestFirst[index + 1];
+        let change = "--";
+        let down = true;
+
+        if (prev) {
+          const diff = item.weight - prev.weight;
+          change = diff < 0 ? `▼ ${diff.toFixed(1)}` : diff > 0 ? `▲ +${diff.toFixed(1)}` : "• 0.0";
+          down = diff <= 0;
+        }
+
+        const pct = ((item.weight - minWeight) / range) * 100;
+
+        wlogEl.innerHTML += `
+          <div class="wlog-row">
+            <span class="wlog-date">${formatShortDate(item.date)}</span>
+            <span class="wlog-w">${item.weight} kg</span>
+            <div class="wlog-bar"><div class="wlog-bfill" style="width:${pct}%"></div></div>
+            <span class="wchg ${down ? 'wdown' : 'wup'}">${change}</span>
+          </div>
+        `;
+      });
+    }
+
+    function renderWorkoutMix(summary) {
+      const workouts = summary.workouts || [];
+      const mix = {};
+
+      workouts.forEach(w => {
+        const key = w.workout || "Other";
+        mix[key] = (mix[key] || 0) + 1;
+      });
+
+      const palette = ['#1a8cff','#ef4444','#22c55e','#f59e0b','#06b6d4','#a855f7'];
+
+      const donutData = Object.keys(mix).map((label, index) => ({
+        label,
+        val: mix[label],
+        color: palette[index % palette.length]
+      }));
+
+      donutChart = new Chart(document.getElementById("donutChart"), {
+        type: "doughnut",
+        data: {
+          labels: donutData.map(d => d.label),
+          datasets: [{
+            data: donutData.map(d => d.val),
+            backgroundColor: donutData.map(d => d.color),
+            borderWidth: 0,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "65%",
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      const legend = document.getElementById("donut-legend");
+      legend.innerHTML = "";
+
+      donutData.forEach(d => {
+        legend.innerHTML += `
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:10px;height:10px;border-radius:2px;background:${d.color};flex-shrink:0;"></div>
+            <span style="color:var(--muted);">${d.label}</span>
+            <span style="margin-left:auto;font-weight:500;">${d.val}</span>
+          </div>
+        `;
+      });
+    }
+
+    function renderStreak(summary) {
+      const container = document.getElementById("streak-days");
+      container.innerHTML = "";
+
+      const streak = summary.currentStreak || 0;
+      const totalDays = Math.max(summary.bestStreak || 0, streak, 12);
+
+      for (let i = 1; i <= totalDays; i++) {
+        let cls = "miss";
+        if (i < streak) cls = "done";
+        if (i === streak && streak > 0) cls = "today";
+        container.innerHTML += `<div class="sday ${cls}">${i}</div>`;
+      }
+    }
+
+    function renderDailyTable(summary) {
+      const tb = document.getElementById("daily-table");
+      tb.innerHTML = "";
+
+      const last7 = getLastNDays(7).reverse();
+
+      last7.forEach(day => {
+        const dayWorkouts = (summary.workouts || []).filter(w => {
+          return w.date && new Date(w.date).toISOString().split("T")[0] === day.iso;
+        });
+
+        const totalCal = dayWorkouts.reduce((sum, w) => sum + (w.calories || 0), 0);
+        const workoutLabel = dayWorkouts.length ? dayWorkouts[0].workout : "Rest";
+
+        const daily = (summary.dailyHistory || []).find(item => item.date === day.iso);
+        const weight = (summary.weightHistory || []).find(item => item.date === day.iso);
+
+        const steps = daily ? (daily.steps || 0) : 0;
+        const water = daily ? (daily.water || 0) : 0;
+        const weightText = weight ? `${weight.weight} kg` : "--";
+        const ok = totalCal > 0 || steps > 0 || water > 0;
+
+        tb.innerHTML += `
+          <tr>
+            <td style="color:var(--muted);">${formatShortDate(day.iso)}</td>
+            <td>${workoutLabel}</td>
+            <td style="color:var(--red);font-weight:500;">${totalCal} kcal</td>
+            <td style="color:var(--blue);">${steps}</td>
+            <td>💧 ${water}/8</td>
+            <td style="font-weight:500;">${weightText}</td>
+            <td><span class="wchg ${ok ? 'wdown' : 'wup'}">${ok ? '✓ Logged' : '— Rest'}</span></td>
+          </tr>
+        `;
+      });
+    }
+
+    async function initProgressPage() {
+      if (!userId) {
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const today = todayISO();
+
+        const [summary, todayProgress] = await Promise.all([
+          fetchJSON(`${API_BASE}/progress/${userId}`),
+          fetchJSON(`${API_BASE}/daily-progress/${userId}/${today}`)
+        ]);
+
+        updateTopStats(summary, todayProgress);
+        updateHero(summary, summary.dailyHistory || []);
+        updateWeightGoal(summary);
+
+        renderCaloriesChart(summary);
+        renderStepsChart(summary.dailyHistory || []);
+        renderWaterChart(summary.dailyHistory || []);
+        renderWeightChart(summary.weightHistory || []);
+        renderWeightLog(summary.weightHistory || []);
+        renderWorkoutMix(summary);
+        renderStreak(summary);
+        renderDailyTable(summary);
+
+      } catch (err) {
+        console.log(err);
+        alert("Failed to load progress data");
+      }
+    }
+
+    initProgressPage();
   </script>
 
 </body>

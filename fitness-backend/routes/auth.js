@@ -32,9 +32,9 @@ router.post("/signup", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, password } = req.body;
 
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ name, password });
 
     if (user) {
       res.json({
@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
         name: user.name
       });
     } else {
-      res.json({ error: "Invalid email or password" });
+      res.json({ error: "Invalid name or password" });
     }
 
   } catch (err) {

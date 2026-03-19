@@ -127,31 +127,93 @@ Female
 Male
 </label>
 
+<label class="option">
+<input type="radio" name="sex" value="Other">
+Other
+</label>
+
 <button onclick="saveUser()">CONTINUE</button>
 
 </div>
 
 <script>
+const userId = localStorage.getItem("userId");
 
-function saveUser(){
-
-const fname=document.getElementById("fname").value;
-const lname=document.getElementById("lname").value;
-const sex=document.querySelector('input[name="sex"]:checked')?.value;
-
-if(!fname || !lname || !sex){
-alert("Please fill all fields");
-return;
+if (!userId) {
+  alert("Please login first");
+  window.location.href = "login.html";
 }
 
-localStorage.setItem("fname",fname);
-localStorage.setItem("lname",lname);
-localStorage.setItem("sex",sex);
-sessionStorage.setItem("loggedIn",true);
-window.location.href="main.html";
+function loadUserProfile() {
+  if (!userId) return;
 
+  fetch(`http://localhost:5000/api/auth/profile/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) return;
+
+      if (data.fname) {
+        document.getElementById("fname").value = data.fname;
+      }
+
+      if (data.lname) {
+        document.getElementById("lname").value = data.lname;
+      }
+
+      if (data.sex) {
+        const sexOption = document.querySelector(`input[name="sex"][value="${data.sex}"]`);
+        if (sexOption) {
+          sexOption.checked = true;
+        }
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
+function saveUser() {
+  const fname = document.getElementById("fname").value.trim();
+  const lname = document.getElementById("lname").value.trim();
+  const sex = document.querySelector('input[name="sex"]:checked')?.value;
+
+  if (!fname || !lname || !sex) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      fname,
+      lname,
+      sex
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("fname", fname);
+    localStorage.setItem("lname", lname);
+    localStorage.setItem("sex", sex);
+
+    window.location.href = "main.html";
+  })
+  .catch(err => {
+    console.log(err);
+    alert("Failed to save profile");
+  });
+}
+
+loadUserProfile();
 </script>
 
 </body>

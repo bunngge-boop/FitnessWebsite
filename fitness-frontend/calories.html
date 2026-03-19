@@ -220,70 +220,114 @@ Total Calories: <span id="totalCalories">0</span> kcal
 
 
 <script>
-
-let total=0;
-
-function setCalories(){
-const s=document.getElementById("foodSelect");
-const cal=s.options[s.selectedIndex].getAttribute("data-cal");
-document.getElementById("calories").value=cal||"";
-}
-
-document.getElementById("calorieForm").addEventListener("submit",function(e){
-
-e.preventDefault();
-
-const s=document.getElementById("foodSelect");
-const food=s.options[s.selectedIndex].text;
-const cal=parseInt(document.getElementById("calories").value);
+let total = 0;
 
 const userId = localStorage.getItem("userId");
 
-fetch("http://localhost:5000/api/calories/add",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-userId:userId,
-food:food,
-calories:cal
-})
-});
-
-if(!cal){ alert("Select food first"); return; }
-
-const tbody=document.querySelector("#foodTable tbody");
-const row=tbody.insertRow();
-
-row.insertCell(0).innerText=food;
-row.insertCell(1).innerText=cal+" kcal";
-
-const del=row.insertCell(2);
-const btn=document.createElement("button");
-btn.innerText="Delete";
-btn.className="delete-btn";
-
-btn.onclick=function(){
-total-=cal;
-document.getElementById("totalCalories").innerText=total;
-row.remove();
-};
-
-del.appendChild(btn);
-
-total+=cal;
-document.getElementById("totalCalories").innerText=total;
-
-this.reset();
-
-});
-
-function logout(){
-sessionStorage.removeItem("loggedIn");
-window.location.href="login.html";
+function setCalories() {
+  const s = document.getElementById("foodSelect");
+  const cal = s.options[s.selectedIndex].getAttribute("data-cal");
+  document.getElementById("calories").value = cal || "";
 }
 
+function addRow(item) {
+  const tbody = document.querySelector("#foodTable tbody");
+  const row = tbody.insertRow();
+
+  row.insertCell(0).innerText = item.food;
+  row.insertCell(1).innerText = item.calories + " kcal";
+
+  const del = row.insertCell(2);
+  const btn = document.createElement("button");
+  btn.innerText = "Delete";
+  btn.className = "delete-btn";
+
+  btn.onclick = function () {
+    fetch(`http://localhost:5000/api/calories/${item._id}`, {
+      method: "DELETE"
+    })
+    .then(res => res.json())
+    .then(() => {
+      total -= item.calories;
+      document.getElementById("totalCalories").innerText = total;
+      row.remove();
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Failed to delete calorie entry");
+    });
+  };
+
+  del.appendChild(btn);
+
+  total += item.calories;
+  document.getElementById("totalCalories").innerText = total;
+}
+
+function loadCalories() {
+  if (!userId) return;
+
+  fetch(`http://localhost:5000/api/calories/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      total = 0;
+      document.querySelector("#foodTable tbody").innerHTML = "";
+      data.forEach(item => addRow(item));
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Failed to load calorie data");
+    });
+}
+
+document.getElementById("calorieForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const s = document.getElementById("foodSelect");
+  const food = s.options[s.selectedIndex].text;
+  const cal = parseInt(document.getElementById("calories").value);
+
+  if (!cal) {
+    alert("Select food first");
+    return;
+  }
+
+  fetch("http://localhost:5000/api/calories/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userId: userId,
+      food: food,
+      calories: cal
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    loadCalories();
+    this.reset();
+    document.getElementById("calories").value = "";
+  })
+  .catch(err => {
+    console.log(err);
+    alert("Failed to save calorie entry");
+  });
+});
+
+function logout() {
+  sessionStorage.removeItem("loggedIn");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userName");
+  window.location.href = "login.html";
+}
+
+loadCalories();
 </script>
 
 </body>

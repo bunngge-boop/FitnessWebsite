@@ -215,110 +215,151 @@ border-radius:10px;
 
 
 <script>
-
-let totalBurned=0;
+let totalBurned = 0;
 let goal = 0;
-
-function setGoal(){
-const val = parseInt(document.getElementById("goalInput").value);
-
-if(!val || val<=0){
-alert("Enter a valid goal");
-return;
-}
-
-goal = val;
-updateTotal();
-}
-
-document.getElementById("workoutForm").addEventListener("submit",function(e){
-
-e.preventDefault();
-
-const s=document.getElementById("workoutSelect");
-const workout=s.options[s.selectedIndex].text;
-const rate=parseInt(s.options[s.selectedIndex].getAttribute("data-cal"));
-const minutes=parseInt(document.getElementById("minutes").value);
-const intensity=document.getElementById("intensity").value;
-
-if(!rate || !minutes){
-alert("Select workout and minutes");
-return;
-}
-
-const burned=Math.round(rate*minutes*intensity);
 
 const userId = localStorage.getItem("userId");
 
-fetch("http://localhost:5000/api/workout/add",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-userId:userId,
-workout:workout,
-minutes:minutes,
-intensity:intensity,
-calories:burned
-})
+function setGoal() {
+  const val = parseInt(document.getElementById("goalInput").value);
+
+  if (!val || val <= 0) {
+    alert("Enter a valid goal");
+    return;
+  }
+
+  goal = val;
+  updateTotal();
+}
+
+function updateTotal() {
+  document.getElementById("totalBurned").innerText = totalBurned;
+
+  document.getElementById("goalText").innerText =
+    "Calories Burned: " + totalBurned + " / " + goal + " kcal";
+
+  if (goal > 0) {
+    let percent = Math.min((totalBurned / goal) * 100, 100);
+    document.getElementById("progressBar").style.width = percent + "%";
+  } else {
+    document.getElementById("progressBar").style.width = "0%";
+  }
+}
+
+function addWorkoutRow(item) {
+  const tbody = document.querySelector("#workoutTable tbody");
+  const row = tbody.insertRow();
+
+  row.insertCell(0).innerText = item.workout;
+  row.insertCell(1).innerText = item.minutes;
+  row.insertCell(2).innerText = item.intensity + "x";
+  row.insertCell(3).innerText = item.calories + " kcal";
+  row.insertCell(4).innerText = item.time || "-";
+
+  const del = row.insertCell(5);
+  const btn = document.createElement("button");
+  btn.innerText = "Delete";
+  btn.className = "delete-btn";
+
+  btn.onclick = function () {
+    fetch(`http://localhost:5000/api/workout/${item._id}`, {
+      method: "DELETE"
+    })
+    .then(res => res.json())
+    .then(() => {
+      totalBurned -= item.calories;
+      updateTotal();
+      row.remove();
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Failed to delete workout");
+    });
+  };
+
+  del.appendChild(btn);
+
+  totalBurned += item.calories;
+  updateTotal();
+}
+
+function loadWorkouts() {
+  if (!userId) return;
+
+  fetch(`http://localhost:5000/api/workout/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      totalBurned = 0;
+      document.querySelector("#workoutTable tbody").innerHTML = "";
+      data.forEach(item => addWorkoutRow(item));
+    })
+    .catch(err => {
+      console.log(err);
+      alert("Failed to load workouts");
+    });
+}
+
+document.getElementById("workoutForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const s = document.getElementById("workoutSelect");
+  const workout = s.options[s.selectedIndex].text;
+  const rate = parseInt(s.options[s.selectedIndex].getAttribute("data-cal"));
+  const minutes = parseInt(document.getElementById("minutes").value);
+  const intensity = Number(document.getElementById("intensity").value);
+
+  if (!rate || !minutes) {
+    alert("Select workout and minutes");
+    return;
+  }
+
+  const burned = Math.round(rate * minutes * intensity);
+  const now = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  fetch("http://localhost:5000/api/workout/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userId: userId,
+      workout: workout,
+      minutes: minutes,
+      intensity: intensity,
+      calories: burned,
+      time: now
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
+
+    loadWorkouts();
+    this.reset();
+  })
+  .catch(err => {
+    console.log(err);
+    alert("Failed to save workout");
+  });
 });
-const now=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 
-const tbody=document.querySelector("#workoutTable tbody");
-const row=tbody.insertRow();
-
-row.insertCell(0).innerText=workout;
-row.insertCell(1).innerText=minutes;
-row.insertCell(2).innerText=intensity+"x";
-row.insertCell(3).innerText=burned+" kcal";
-row.insertCell(4).innerText=now;
-
-const del=row.insertCell(5);
-const btn=document.createElement("button");
-btn.innerText="Delete";
-btn.className="delete-btn";
-
-btn.onclick=function(){
-totalBurned-=burned;
-localStorage.setItem("burnedCalories", totalBurned);
-updateTotal();
-row.remove();
-};
-
-del.appendChild(btn);
-
-totalBurned+=burned;
-
-localStorage.setItem("burnedCalories", totalBurned);
-
-updateTotal();
-
-this.reset();
-
-});
-
-function updateTotal(){
-
-document.getElementById("totalBurned").innerText = totalBurned;
-
-document.getElementById("goalText").innerText =
-"Calories Burned: " + totalBurned + " / " + goal + " kcal";
-
-if(goal>0){
-let percent=Math.min((totalBurned/goal)*100,100);
-document.getElementById("progressBar").style.width=percent+"%";
-}else{
-document.getElementById("progressBar").style.width="0%";
-}
+function logout() {
+  sessionStorage.removeItem("loggedIn");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userName");
+  window.location.href = "login.html";
 }
 
-function logout(){
-sessionStorage.removeItem("loggedIn");
-window.location.href="login.html";
-}
-
+loadWorkouts();
 </script>
+
+
 
 </body>
 </html>

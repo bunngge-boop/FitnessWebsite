@@ -1,241 +1,219 @@
-/* 
-LOGIN SESSION CHECK*/
+/* ================= LOGIN CHECK ================= */
 
-if(sessionStorage.getItem("loggedIn") !== "true"){
-window.location.href = "login.html";
+if (localStorage.getItem("loggedIn") !== "true") {
+  window.location.href = "login.html";
 }
 
+const userId = localStorage.getItem("userId");
+const today = new Date().toISOString().split("T")[0];
 
-/* LOGOUT*/
+/* ================= LOGOUT ================= */
 
-function logout(){
-sessionStorage.removeItem("loggedIn");
-window.location.href="login.html";
+function logout() {
+  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userName");
+  window.location.href = "login.html";
 }
 
-
-/* WELCOME USER NAME*/
+/* ================= WELCOME NAME ================= */
 
 document.addEventListener("DOMContentLoaded", function () {
+  const name = localStorage.getItem("userName");
 
-const name = localStorage.getItem("userName");
+  if (name) {
+    const el = document.getElementById("welcome");
+    if (el) el.innerText = "Welcome " + name;
+  }
 
-if (name) {
-const el = document.getElementById("welcome");
-if(el) el.innerText = "Welcome " + name;
-}
-
+  loadDailyProgress();
+  loadBurnedCalories();
 });
 
+/* ================= NAV ACTIVE ================= */
 
-/*NAVIGATION ACTIVE STATE */
+const list = document.querySelectorAll(".navigation ul li");
 
-const list = document.querySelectorAll('.navigation ul li');
-
-list.forEach((item)=>{
-item.addEventListener('click', function(){
-
-list.forEach((li)=> li.classList.remove('active'));
-
-this.classList.add('active');
-
-});
+list.forEach((item) => {
+  item.addEventListener("click", function () {
+    list.forEach((li) => li.classList.remove("active"));
+    this.classList.add("active");
+  });
 });
 
+/* ================= WATER + STEPS ================= */
 
-/*WATER INTAKE */
-
-let water = parseInt(localStorage.getItem("water")) || 0;
+let water = 0;
+let steps = 0;
 
 const WATER_GOAL = 8;
 
-updateWater();
-
-function addWater(){
-
-if(water < WATER_GOAL){
-
-water++;
-
-localStorage.setItem("water", water);
-
-updateWater();
-
-}
-
-}
-
-function resetWater(){
-
-water = 0;
-
-localStorage.setItem("water", water);
-
-updateWater();
-
-}
-
-function updateWater(){
-
-const text = document.getElementById("waterText");
-
-if(text){
-text.innerText = water + " / " + WATER_GOAL + " glasses";
-}
-
-let percent = (water / WATER_GOAL) * 100;
-
-const bar = document.getElementById("waterBar");
-
-if(bar){
-bar.style.width = percent + "%";
-}
-
-}
-
-
-/*SHOW BURNED CALORIES*/
-
-const burnedDisplay = document.getElementById("burned");
-
-if(burnedDisplay){
-
-const saved = localStorage.getItem("burnedCalories") || 0;
-
-burnedDisplay.innerText = saved + " kcal";
-
-}
-
-
-/*STEP TRACKING */
-
-let steps = parseInt(localStorage.getItem("steps")) || 0;
-
 let tracking = false;
-
 let lastMagnitude = 0;
-
 let lastStepTime = 0;
-
 let motionHandler = null;
 
-updateSteps();
+/* ================= LOAD DAILY DATA ================= */
 
+function loadDailyProgress() {
+  if (!userId) return;
 
-function updateSteps(){
+  fetch(`http://localhost:5000/api/daily-progress/${userId}/${today}`)
+    .then(res => res.json())
+    .then(data => {
+      water = data.water || 0;
+      steps = data.steps || 0;
 
-const el = document.getElementById("steps");
-
-if(el) el.innerText = steps;
-
+      updateWater();
+      updateSteps();
+    })
+    .catch(err => console.log(err));
 }
 
+/* ================= SAVE DAILY DATA ================= */
 
-/* START STEP TRACKING */
+function saveDailyProgress() {
+  if (!userId) return;
 
-function startTracking(){
-
-if(tracking) return;
-
-function begin(){
-
-tracking = true;
-
-motionHandler = function(e){
-
-const acc = e.accelerationIncludingGravity;
-
-if(!acc) return;
-
-const mag = Math.sqrt(
-
-acc.x * acc.x +
-
-acc.y * acc.y +
-
-acc.z * acc.z
-
-);
-
-const now = Date.now();
-
-
-/* STEP DETECTION */
-
-if(Math.abs(mag - lastMagnitude) > 4 && (now - lastStepTime) > 500){
-
-steps++;
-
-localStorage.setItem("steps", steps);
-
-updateSteps();
-
-lastStepTime = now;
-
+  fetch("http://localhost:5000/api/daily-progress/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userId,
+      date: today,
+      steps,
+      water
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) console.log(data.error);
+    })
+    .catch(err => console.log(err));
 }
 
-lastMagnitude = mag;
+/* ================= WATER ================= */
 
-};
-
-window.addEventListener("devicemotion", motionHandler);
-
-alert("Step tracking started. Walk with phone.");
-
+function addWater() {
+  if (water < WATER_GOAL) {
+    water++;
+    updateWater();
+    saveDailyProgress();
+  }
 }
 
-
-/* IOS PERMISSION */
-
-if(typeof DeviceMotionEvent !== "undefined" &&
-typeof DeviceMotionEvent.requestPermission === "function"){
-
-DeviceMotionEvent.requestPermission()
-
-.then(res=>{
-
-if(res==="granted") begin();
-
-else alert("Motion permission denied");
-
-})
-
-.catch(()=>alert("Permission error"));
-
+function resetWater() {
+  water = 0;
+  updateWater();
+  saveDailyProgress();
 }
 
-else{
+function updateWater() {
+  const text = document.getElementById("waterText");
 
-begin();
+  if (text) {
+    text.innerText = water + " / " + WATER_GOAL + " glasses";
+  }
 
+  let percent = (water / WATER_GOAL) * 100;
+
+  const bar = document.getElementById("waterBar");
+
+  if (bar) {
+    bar.style.width = percent + "%";
+  }
 }
 
+/* ================= CALORIES (FROM BACKEND) ================= */
+
+function loadBurnedCalories() {
+  const el = document.getElementById("burned");
+
+  if (!el || !userId) return;
+
+  fetch(`http://localhost:5000/api/workout/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      const total = data.reduce((sum, item) => sum + (item.calories || 0), 0);
+      el.innerText = total + " kcal";
+    })
+    .catch(err => console.log(err));
 }
 
+/* ================= STEPS ================= */
 
-/* STOP TRACKING */
-
-function stopTracking(){
-
-tracking = false;
-
-if(motionHandler){
-
-window.removeEventListener("devicemotion", motionHandler);
-
+function updateSteps() {
+  const el = document.getElementById("steps");
+  if (el) el.innerText = steps;
 }
 
+/* ================= START STEP TRACKING ================= */
+
+function startTracking() {
+  if (tracking) return;
+
+  function begin() {
+    tracking = true;
+
+    motionHandler = function (e) {
+      const acc = e.accelerationIncludingGravity;
+      if (!acc) return;
+
+      const mag = Math.sqrt(
+        acc.x * acc.x +
+        acc.y * acc.y +
+        acc.z * acc.z
+      );
+
+      const now = Date.now();
+
+      if (Math.abs(mag - lastMagnitude) > 4 && (now - lastStepTime) > 500) {
+        steps++;
+        updateSteps();
+        saveDailyProgress();
+        lastStepTime = now;
+      }
+
+      lastMagnitude = mag;
+    };
+
+    window.addEventListener("devicemotion", motionHandler);
+
+    alert("Step tracking started. Walk with phone.");
+  }
+
+  /* IOS permission */
+  if (
+    typeof DeviceMotionEvent !== "undefined" &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission()
+      .then(res => {
+        if (res === "granted") begin();
+        else alert("Motion permission denied");
+      })
+      .catch(() => alert("Permission error"));
+  } else {
+    begin();
+  }
 }
 
+/* ================= STOP TRACKING ================= */
 
-/* RESET STEPS */
+function stopTracking() {
+  tracking = false;
 
-function resetSteps(){
+  if (motionHandler) {
+    window.removeEventListener("devicemotion", motionHandler);
+  }
+}
 
-steps = 0;
+/* ================= RESET STEPS ================= */
 
-localStorage.setItem("steps", steps);
-
-updateSteps();
-
+function resetSteps() {
+  steps = 0;
+  updateSteps();
+  saveDailyProgress();
 }
