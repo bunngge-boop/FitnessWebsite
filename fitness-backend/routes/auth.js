@@ -3,56 +3,93 @@ const router = express.Router();
 
 const User = require("../models/User");
 
+// SIGNUP
 router.post("/signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-try{
+    const existingUser = await User.findOne({ email });
 
-const {name,email,password} = req.body;
+    if (existingUser) {
+      return res.json({ error: "User already exists" });
+    }
 
-const existingUser = await User.findOne({email});
+    const user = new User({
+      name,
+      email,
+      password
+    });
 
-if(existingUser){
-return res.json({error:"User already exists"});
-}
+    await user.save();
 
-const user = new User({
-name,
-email,
-password
+    res.json({ message: "User created successfully" });
+
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
-await user.save();
+// LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-res.json({message:"User created successfully"});
+    const user = await User.findOne({ email, password });
 
-}catch(err){
-res.json({error:err.message});
-}
+    if (user) {
+      res.json({
+        message: "Login successful",
+        userId: user._id,
+        name: user.name
+      });
+    } else {
+      res.json({ error: "Invalid email or password" });
+    }
 
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
-router.post("/login", async (req,res)=>{
+// SAVE / UPDATE USER PROFILE
+router.put("/profile/:userId", async (req, res) => {
+  try {
+    const { fname, lname, sex } = req.body;
 
-try{
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { fname, lname, sex },
+      { new: true, runValidators: true }
+    );
 
-const {email,password} = req.body;
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-const user = await User.findOne({email,password});
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
 
-if(user){
-res.json({
-message:"Login successful",
-userId:user._id,
-name:user.name
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
-}else{
-res.json({error:"Invalid email or password"});
-}
 
-}catch(err){
-res.json({error:err.message});
-}
+// GET USER PROFILE
+router.get("/profile/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
 
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;    

@@ -20,6 +20,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/workout", require("./routes/workout"));
 app.use("/api/calories", require("./routes/calories"));
 app.use("/api/contact", require("./routes/contact"));
+app.use("/api/progress", require("./routes/progress"));
 
 /* ----------- TEST ROUTE ----------- */
 app.get("/", (req, res) => {
