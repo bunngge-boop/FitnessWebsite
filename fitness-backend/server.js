@@ -10,9 +10,31 @@ connectDB();
 /* ----------- MIDDLEWARE ----------- */
 app.use(express.json());
 
+/* ----------- CORS CONFIG (SECURE) ----------- */
+
+const allowedOrigins = [
+  "http://127.0.0.1:5500",   // Live Server
+  "http://localhost:5500",
+  "http://127.0.0.1:5501",
+  "http://localhost:5501",
+];
+
 app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"]
+  origin: function (origin, callback) {
+
+    // Allow requests from Postman / Thunder Client
+    if (!origin) return callback(null, true);
+
+    // Allow only frontend URLs
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Block others
+    return callback(new Error("CORS not allowed"));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
 
 /* ----------- ROUTES ----------- */
