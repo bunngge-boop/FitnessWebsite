@@ -262,7 +262,7 @@ function addWorkoutRow(item) {
   btn.className = "delete-btn";
 
   btn.onclick = function () {
-    fetch(`http://localhost:5000/api/workout/${item._id}`, {
+    fetch(`http://fitnesswebsite-1nkt.onrender.com/api/workout/${item._id}`, {
       method: "DELETE"
     })
     .then(res => res.json())
@@ -286,7 +286,7 @@ function addWorkoutRow(item) {
 function loadWorkouts() {
   if (!userId) return;
 
-  fetch(`http://localhost:5000/api/workout/${userId}`)
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/workout/${userId}`)
     .then(res => res.json())
     .then(data => {
       totalBurned = 0;
@@ -319,7 +319,7 @@ document.getElementById("workoutForm").addEventListener("submit", function (e) {
     minute: "2-digit"
   });
 
-  fetch("http://localhost:5000/api/workout/add", {
+  fetch("http://fitnesswebsite-1nkt.onrender.com/api/workout/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

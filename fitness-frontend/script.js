@@ -63,7 +63,7 @@ let motionHandler = null;
 function loadDailyProgress() {
   if (!userId) return;
 
-  fetch(`http://localhost:5000/api/daily-progress/${userId}/${today}`)
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/daily-progress/${userId}/${today}`)
     .then(res => res.json())
     .then(data => {
       water = data.water || 0;
@@ -80,7 +80,7 @@ function loadDailyProgress() {
 function saveDailyProgress() {
   if (!userId) return;
 
-  fetch("http://localhost:5000/api/daily-progress/save", {
+  fetch("http://fitnesswebsite-1nkt.onrender.com/api/daily-progress/save", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -138,7 +138,7 @@ function loadBurnedCalories() {
 
   if (!el || !userId) return;
 
-  fetch(`http://localhost:5000/api/workout/${userId}`)
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/workout/${userId}`)
     .then(res => res.json())
     .then(data => {
       const total = data.reduce((sum, item) => sum + (item.calories || 0), 0);

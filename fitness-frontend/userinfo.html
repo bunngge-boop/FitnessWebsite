@@ -147,7 +147,7 @@ if (!userId) {
 function loadUserProfile() {
   if (!userId) return;
 
-  fetch(`http://localhost:5000/api/auth/profile/${userId}`)
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/auth/profile/${userId}`)
     .then(res => res.json())
     .then(data => {
       if (data.error) return;
@@ -182,7 +182,7 @@ function saveUser() {
     return;
   }
 
-  fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/auth/profile/${userId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"

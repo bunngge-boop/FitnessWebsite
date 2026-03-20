@@ -243,7 +243,7 @@ function addRow(item) {
   btn.className = "delete-btn";
 
   btn.onclick = function () {
-    fetch(`http://localhost:5000/api/calories/${item._id}`, {
+    fetch(`http://fitnesswebsite-1nkt.onrender.com/api/calories/${item._id}`, {
       method: "DELETE"
     })
     .then(res => res.json())
@@ -267,7 +267,7 @@ function addRow(item) {
 function loadCalories() {
   if (!userId) return;
 
-  fetch(`http://localhost:5000/api/calories/${userId}`)
+  fetch(`http://fitnesswebsite-1nkt.onrender.com/api/calories/${userId}`)
     .then(res => res.json())
     .then(data => {
       total = 0;
@@ -292,7 +292,7 @@ document.getElementById("calorieForm").addEventListener("submit", function (e) {
     return;
   }
 
-  fetch("http://localhost:5000/api/calories/add", {
+  fetch("http://fitnesswebsite-1nkt.onrender.com/api/calories/add", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

@@ -20,7 +20,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     return;
   }
 
-  fetch("http://localhost:5000/api/auth/login", {
+  fetch("http://fitnesswebsite-1nkt.onrender.com/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -64,7 +64,7 @@ document.getElementById("signupForm").addEventListener("submit", function (e) {
     return;
   }
 
-  fetch("http://localhost:5000/api/auth/signup", {
+  fetch("http://fitnesswebsite-1nkt.onrender.com/api/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
