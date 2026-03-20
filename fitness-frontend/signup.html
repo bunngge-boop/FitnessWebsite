@@ -9,41 +9,44 @@
 
 <h2>Create Account</h2>
 
-<input type="text" id="newUser" placeholder="Username">
-<input type="password" id="newPass" placeholder="Password">
+<input type="text" id="name" placeholder="Name">
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
 
 <button onclick="signup()">Sign Up</button>
 
 <script>
+async function signup() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-async function signup(){
+  if (!name || !email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
 
-const name=document.getElementById("newUser").value;
-const password=document.getElementById("newPass").value;
+  const res = await fetch("http://localhost:5000/api/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password
+    })
+  });
 
-const res = await fetch("http://localhost:5000/api/auth/signup",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-name:name,
-email:name,
-password:password
-})
-});
+  const data = await res.json();
 
-const data = await res.json();
-
-if(data.message){
-alert("Signup successful");
-window.location.href="login.html";
-}else{
-alert(data.error);
+  if (data.message) {
+    alert("Signup successful");
+    window.location.href = "login.html";
+  } else {
+    alert(data.error || "Signup failed");
+  }
 }
-
-}
-
 </script>
 
 </body>

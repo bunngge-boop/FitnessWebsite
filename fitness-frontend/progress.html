@@ -48,10 +48,6 @@
     .scard-val { font-family:var(--head); font-size:24px; letter-spacing:1px; line-height:1; margin-bottom:3px; }
     .scard-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
 
-    .ptabs { display:flex; gap:3px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:3px; }
-    .ptab  { padding:4px 13px; border-radius:6px; font-size:11px; font-weight:500; cursor:pointer; color:var(--muted); border:none; background:none; font-family:var(--body); transition:all .15s; }
-    .ptab.active { background:var(--blue); color:#fff; }
-
     .card    { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
     .card-h  { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
     .card-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
@@ -73,7 +69,7 @@
     .wlog-row   { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid rgba(42,52,68,0.5); }
     .wlog-row:last-child { border-bottom:none; }
     .wlog-date  { font-size:12px; color:var(--muted); width:80px; }
-    .wlog-w     { font-size:14px; font-weight:600; width:60px; }
+    .wlog-w     { font-size:14px; font-weight:600; width:70px; }
     .wlog-bar   { flex:1; height:4px; background:var(--surface2); border-radius:4px; margin:0 12px; overflow:hidden; }
     .wlog-bfill { height:100%; background:var(--green); border-radius:4px; }
     .wchg  { font-size:11px; padding:2px 8px; border-radius:6px; white-space:nowrap; }
@@ -97,6 +93,11 @@
     .footer-cta p  { font-size:13px; color:rgba(255,255,255,0.75); margin-bottom:24px; }
     .btn-todash { background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.6); border-radius:30px; padding:10px 30px; font-family:var(--body); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
     .btn-todash:hover { background:rgba(255,255,255,0.15); }
+
+    @media (max-width: 900px) {
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .grid2 { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -147,7 +148,7 @@
     </div>
 
     <div class="goal-mega">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;">
         <div>
           <div class="card-title">⚖️ Weight Loss Goal</div>
           <div class="goal-meta">
@@ -168,6 +169,27 @@
         <span id="trackStartLabel">75 kg (start)</span>
         <span style="color:var(--green);font-weight:500;" id="trackMiddleLabel">Getting started!</span>
         <span id="trackGoalLabel">65 kg (goal)</span>
+      </div>
+    </div>
+
+    <div class="card mb16">
+      <div class="card-h">
+        <div class="card-title">⚖️ Update Weight</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:end;">
+        <div style="flex:1;min-width:220px;">
+          <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Date</label>
+          <input type="date" id="weightDate" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--surface2);color:var(--text);">
+        </div>
+
+        <div style="flex:1;min-width:220px;">
+          <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Weight (kg)</label>
+          <input type="number" id="weightValue" step="0.1" min="1" placeholder="Enter weight" style="width:100%;padding:12px;border:none;border-radius:10px;background:var(--surface2);color:var(--text);">
+        </div>
+
+        <button id="saveWeightBtn" style="padding:12px 22px;border:none;border-radius:10px;background:var(--blue);color:white;cursor:pointer;">
+          Save Weight
+        </button>
       </div>
     </div>
 
@@ -200,7 +222,7 @@
     <div class="grid2 mb16">
       <div class="card">
         <div class="card-h"><div class="card-title">🏋️ Workout Mix</div></div>
-        <div style="display:flex;align-items:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
           <div class="cwrap" style="height:160px;width:160px;flex-shrink:0;"><canvas id="donutChart"></canvas></div>
           <div id="donut-legend" style="display:flex;flex-direction:column;gap:8px;font-size:12px;"></div>
         </div>
@@ -254,13 +276,13 @@
       grid:'rgba(255,255,255,0.05)'
     };
 
-    let calChart, stepsChart, weightChart, donutChart, waterChart;
-
     const START_WEIGHT = 75;
     const GOAL_WEIGHT = 65;
 
+    let calChart, stepsChart, weightChart, donutChart, waterChart;
+
     function logout() {
-      sessionStorage.removeItem("loggedIn");
+      localStorage.removeItem("loggedIn");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");
       window.location.href = "login.html";
@@ -302,6 +324,11 @@
     async function fetchJSON(url) {
       const res = await fetch(url);
       return await res.json();
+    }
+
+    function setDefaultWeightDate() {
+      const dateInput = document.getElementById("weightDate");
+      if (dateInput) dateInput.value = todayISO();
     }
 
     function updateTopStats(summary, todayProgress) {
@@ -364,6 +391,8 @@
           .reduce((sum, w) => sum + (w.calories || 0), 0);
       });
 
+      if (calChart) calChart.destroy();
+
       calChart = new Chart(document.getElementById("calChart"), {
         type: "bar",
         data: {
@@ -387,6 +416,8 @@
         return found ? (found.steps || 0) : 0;
       });
 
+      if (stepsChart) stepsChart.destroy();
+
       stepsChart = new Chart(document.getElementById("stepsChart"), {
         type: "bar",
         data: {
@@ -409,6 +440,8 @@
         const found = dailyHistory.find(item => item.date === day.iso);
         return found ? (found.water || 0) : 0;
       });
+
+      if (waterChart) waterChart.destroy();
 
       waterChart = new Chart(document.getElementById("waterChart"), {
         type: "bar",
@@ -442,6 +475,37 @@
     }
 
     function renderWeightChart(weightHistory) {
+      if (weightChart) weightChart.destroy();
+
+      if (!weightHistory.length) {
+        weightChart = new Chart(document.getElementById("weightChart"), {
+          type: "line",
+          data: {
+            labels: ["No Data"],
+            datasets: [{
+              data: [0],
+              borderColor: C.green,
+              backgroundColor: "rgba(34,197,94,0.07)",
+              borderWidth: 2,
+              pointBackgroundColor: C.green,
+              pointRadius: 4,
+              tension: 0.4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 9 } } },
+              y: { grid: { color: C.grid }, ticks: { color: C.muted, font: { size: 10 } } }
+            }
+          }
+        });
+        return;
+      }
+
       const labels = weightHistory.map(item => formatShortDate(item.date));
       const data = weightHistory.map(item => item.weight);
 
@@ -494,7 +558,7 @@
 
         if (prev) {
           const diff = item.weight - prev.weight;
-          change = diff < 0 ? `▼ ${diff.toFixed(1)}` : diff > 0 ? `▲ +${diff.toFixed(1)}` : "• 0.0";
+          change = diff < 0 ? `▼ ${Math.abs(diff).toFixed(1)}` : diff > 0 ? `▲ +${diff.toFixed(1)}` : "• 0.0";
           down = diff <= 0;
         }
 
@@ -521,12 +585,20 @@
       });
 
       const palette = ['#1a8cff','#ef4444','#22c55e','#f59e0b','#06b6d4','#a855f7'];
-
       const donutData = Object.keys(mix).map((label, index) => ({
         label,
         val: mix[label],
         color: palette[index % palette.length]
       }));
+
+      const legend = document.getElementById("donut-legend");
+      legend.innerHTML = "";
+
+      if (!donutData.length) {
+        legend.innerHTML = `<div style="color:var(--muted);font-size:12px;">No workout data available.</div>`;
+      }
+
+      if (donutChart) donutChart.destroy();
 
       donutChart = new Chart(document.getElementById("donutChart"), {
         type: "doughnut",
@@ -547,9 +619,6 @@
         }
       });
 
-      const legend = document.getElementById("donut-legend");
-      legend.innerHTML = "";
-
       donutData.forEach(d => {
         legend.innerHTML += `
           <div style="display:flex;align-items:center;gap:6px;">
@@ -566,7 +635,7 @@
       container.innerHTML = "";
 
       const streak = summary.currentStreak || 0;
-      const totalDays = Math.max(summary.bestStreak || 0, streak, 12);
+      const totalDays = Math.max(summary.bestStreak || 0, streak || 1);
 
       for (let i = 1; i <= totalDays; i++) {
         let cls = "miss";
@@ -612,8 +681,46 @@
       });
     }
 
+    function saveWeight() {
+      const date = document.getElementById("weightDate").value;
+      const weight = parseFloat(document.getElementById("weightValue").value);
+
+      if (!date || !weight) {
+        alert("Please enter date and weight");
+        return;
+      }
+
+      fetch(`${API_BASE}/weight-history/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId,
+          date,
+          weight
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        alert("Weight saved successfully");
+        document.getElementById("weightValue").value = "";
+        setDefaultWeightDate();
+        initProgressPage();
+      })
+      .catch(err => {
+        console.log(err);
+        alert("Failed to save weight");
+      });
+    }
+
     async function initProgressPage() {
-      if (!userId) {
+      if (!userId || localStorage.getItem("loggedIn") !== "true") {
         alert("Please login first");
         window.location.href = "login.html";
         return;
@@ -630,7 +737,6 @@
         updateTopStats(summary, todayProgress);
         updateHero(summary, summary.dailyHistory || []);
         updateWeightGoal(summary);
-
         renderCaloriesChart(summary);
         renderStepsChart(summary.dailyHistory || []);
         renderWaterChart(summary.dailyHistory || []);
@@ -644,6 +750,13 @@
         console.log(err);
         alert("Failed to load progress data");
       }
+    }
+
+    setDefaultWeightDate();
+
+    const saveWeightBtn = document.getElementById("saveWeightBtn");
+    if (saveWeightBtn) {
+      saveWeightBtn.addEventListener("click", saveWeight);
     }
 
     initProgressPage();

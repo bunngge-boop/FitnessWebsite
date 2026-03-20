@@ -20,17 +20,77 @@ const UserSchema = new mongoose.Schema({
 
   fname:{
     type:String,
-    trim:true
+    default:""
   },
 
   lname:{
     type:String,
-    trim:true
+    default:""
   },
 
   sex:{
     type:String,
-    enum:["Male","Female","Other"]
+    default:""
+  },
+
+  handle:{
+    type:String,
+    default:""
+  },
+
+  age:{
+    type:Number,
+    default:null
+  },
+
+  location:{
+    type:String,
+    default:""
+  },
+
+  goal:{
+    type:String,
+    default:""
+  },
+
+  activity:{
+    type:String,
+    default:""
+  },
+
+  height:{
+    type:Number,
+    default:null
+  },
+
+  bmiWeight:{
+    type:Number,
+    default:null
+  },
+
+  bmi:{
+    type:Number,
+    default:null
+  },
+
+  bodyFat:{
+    type:Number,
+    default:null
+  },
+
+  startWeight:{
+    type:Number,
+    default:null
+  },
+
+  currentWeight:{
+    type:Number,
+    default:null
+  },
+
+  goalWeight:{
+    type:Number,
+    default:null
   },
 
   createdAt:{

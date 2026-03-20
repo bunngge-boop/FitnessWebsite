@@ -51,14 +51,48 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// SAVE / UPDATE USER PROFILE
+// GET FULL PROFILE
+router.get("/profile/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// UPDATE PERSONAL INFO
 router.put("/profile/:userId", async (req, res) => {
   try {
-    const { fname, lname, sex } = req.body;
+    const {
+      fname,
+      lname,
+      sex,
+      handle,
+      age,
+      location,
+      goal,
+      activity
+    } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
-      { fname, lname, sex },
+      {
+        fname,
+        lname,
+        sex,
+        handle,
+        age,
+        location,
+        goal,
+        activity
+      },
       { new: true, runValidators: true }
     );
 
@@ -76,20 +110,87 @@ router.put("/profile/:userId", async (req, res) => {
   }
 });
 
-// GET USER PROFILE
-router.get("/profile/:userId", async (req, res) => {
+// UPDATE BMI DATA
+router.put("/profile/bmi/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select("-password");
+    const { height, bmiWeight, bmi } = req.body;
 
-    if (!user) {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        height,
+        bmiWeight,
+        bmi
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.json(user);
+    res.json({
+      message: "BMI data saved successfully",
+      user: updatedUser
+    });
 
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-module.exports = router;    
+// UPDATE BODY FAT DATA
+router.put("/profile/bodyfat/:userId", async (req, res) => {
+  try {
+    const { bodyFat } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { bodyFat },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({
+      message: "Body fat data saved successfully",
+      user: updatedUser
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// UPDATE GOAL WEIGHT DATA
+router.put("/profile/goalweight/:userId", async (req, res) => {
+  try {
+    const { startWeight, currentWeight, goalWeight } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        startWeight,
+        currentWeight,
+        goalWeight
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({
+      message: "Goal weight data saved successfully",
+      user: updatedUser
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;

@@ -1,6 +1,9 @@
 /* ================= LOGIN CHECK ================= */
 
-if (localStorage.getItem("loggedIn") !== "true") {
+if (
+  localStorage.getItem("loggedIn") !== "true" ||
+  !localStorage.getItem("userId")
+) {
   window.location.href = "login.html";
 }
 
@@ -34,12 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const list = document.querySelectorAll(".navigation ul li");
 
-list.forEach((item) => {
-  item.addEventListener("click", function () {
-    list.forEach((li) => li.classList.remove("active"));
-    this.classList.add("active");
+if (list.length) {
+  list.forEach((item) => {
+    item.addEventListener("click", function () {
+      list.forEach((li) => li.classList.remove("active"));
+      this.classList.add("active");
+    });
   });
-});
+}
 
 /* ================= WATER + STEPS ================= */
 
@@ -184,7 +189,6 @@ function startTracking() {
     alert("Step tracking started. Walk with phone.");
   }
 
-  /* IOS permission */
   if (
     typeof DeviceMotionEvent !== "undefined" &&
     typeof DeviceMotionEvent.requestPermission === "function"
@@ -207,6 +211,7 @@ function stopTracking() {
 
   if (motionHandler) {
     window.removeEventListener("devicemotion", motionHandler);
+    motionHandler = null;
   }
 }
 
