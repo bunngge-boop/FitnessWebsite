@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(
-      "mongodb://fitnessUser:StrongPass123@ac-om5xdyj-shard-00-00.wkhutqo.mongodb.net:27017,ac-om5xdyj-shard-00-01.wkhutqo.mongodb.net:27017,ac-om5xdyj-shard-00-02.wkhutqo.mongodb.net:27017/fitnessDB?ssl=true&replicaSet=atlas-cx0wq0-shard-0&authSource=admin&appName=Fitnesstracker"
-    );
+    await mongoose.connect(process.env.MONGO_URI);
 
     console.log("MongoDB Atlas Connected");
   } catch (err) {
-    console.error("Database connection error:", err);
+    console.error("Database connection error:", err.message);
     process.exit(1);
   }
 };
